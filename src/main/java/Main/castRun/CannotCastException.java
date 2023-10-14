@@ -9,7 +9,7 @@ public class CannotCastException extends Exception {
     public CannotCastException(String ExceptionMessage) {
         super(ExceptionMessage);
         this.ExceptionMessage = ExceptionMessage;
-        Logger logger = LogManager.getLogger(Main.class);
+        Logger logger = LogManager.getLogger(set.class);
         logger.error("转换失败，请重试");
 
     }

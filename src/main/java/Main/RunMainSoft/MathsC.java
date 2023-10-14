@@ -10,11 +10,12 @@ import java.io.OutputStream;
 
 public class MathsC {
 
-    public static boolean Main(OutputStream out, InputStream in) throws IOException {
+    public static boolean Main(final OutputStream out, final InputStream in) throws IOException {
         Logger logger = LogManager.getLogger(MathsC.class);
         boolean dd = false;
         out.write("请继续输入(1.比例求比器;2.查看是否成比例;3.化简器;4.因数求解器;5.多数公因数求解器[beta])--输入back返回--".getBytes());
         logger.info("1.比例求比器;2.查看是否成比例;3.化简器;4.因数求解器;5.多数公因数求解器[beta]");
+        out.flush();
         String str = scan.str(out, in);
         logger.info("用户输入：" + str);
         str = str.toLowerCase();
@@ -24,12 +25,14 @@ public class MathsC {
             dd = true;
             logger.info("用户控制：返回上一步");
             out.write("\n".getBytes());
+            out.flush();
             Run r = new Run();
             r.d(out, in);
             return true;
         } else if (str.equals("$exit")) {
             out.write("已退出".getBytes());
             logger.info("用户控制：关闭程序");
+            out.flush();
             logger.info("已退出");
             Run.end = true;
             return true;

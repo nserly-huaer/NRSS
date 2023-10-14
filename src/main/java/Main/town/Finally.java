@@ -19,13 +19,16 @@ public class Finally {
         if (charter > 999) {
             charter = 999;
             out.write(("\n" + "Done!                          计算总耗时:" + charter + "ms（已超标，可能存在异常！）").getBytes());
+            out.flush();
             logger.info("Done!计算总耗时:" + charter + "ms（已超标，可能存在异常！）");
         } else {
             out.write(("\n" + "Done!                                            计算总耗时:" + charter + "ms").getBytes());
+            out.flush();
             logger.info("Done!计算总耗时:" + charter + "ms");
         }
 
         out.write("\n仅限个人使用，请勿用于商业用途！！！！\n版本所有权、解释权:nserly(恩瑟莉)".getBytes());
+        out.flush();
         logger.info("仅限个人使用，请勿用于商业用途！！！！版本所有权、解释权:nserly(恩瑟莉)");
     }
 }

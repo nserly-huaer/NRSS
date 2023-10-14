@@ -17,8 +17,10 @@ public class Main {
         long Charter = Endtime - Starttime;
         logger.info("计算毫秒值：" + Charter);
         out.write(("\n" + "Done!                                      计算总耗时:" + Charter + "ms").getBytes());
+        out.flush();
         logger.info("Done!计算总耗时:" + Charter + "ms");
         out.write("\n仅限个人使用，请勿用于商业用途！！！！\n版权所有权、解释权：nserly(恩瑟莉)".getBytes());
+        out.flush();
         logger.info("仅限个人使用，请勿用于商业用途！！！！版权所有权、解释权：nserly(恩瑟莉)");
     }
 

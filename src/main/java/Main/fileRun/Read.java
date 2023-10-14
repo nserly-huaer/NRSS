@@ -22,15 +22,18 @@ public class Read {
             if (!r.read(filepath, begintime, out, in)) {
                 out.write("\n仅限个人使用，请勿用于商业用途！！！！\n版本所有权、解释权:nserly(恩瑟莉)".getBytes());
                 logger.info("仅限个人使用，请勿用于商业用途！！！！版本所有权、解释权:nserly(恩瑟莉)");
+                out.flush();
                 throw new Danger("Cannot access File or Path!");
             } else {
                 out.write("\n仅限个人使用，请勿用于商业用途！！！！\n版本所有权、解释权:nserly(恩瑟莉)".getBytes());
                 logger.info("仅限个人使用，请勿用于商业用途！！！！版本所有权、解释权:nserly(恩瑟莉)");
+                out.flush();
             }
         } else if (set == 2) {
             Read r = new Read();
             out.write("是否保留原文件内容？（t是;f否）".getBytes());
             logger.info("是否保留原文件内容？（t是;f否）");
+            out.flush();
             String isRemWrite1 = scan.str(out, in);
             logger.info("用户输入:" + isRemWrite1);
 
@@ -41,6 +44,7 @@ public class Read {
             if (isRemWrite1.equals("t")) {
                 isRemWrite = true;
                 out.write("是否换行？（t是;f否）".getBytes());
+                out.flush();
                 logger.info("是否换行？");
                 String da = scan.str(out, in);
                 logger.info("用户输入:" + da);
@@ -60,29 +64,35 @@ public class Read {
             }
             out.write("请输入文件内容".getBytes());
             logger.info("请输入文件内容：");
+            out.flush();
             jea = scan.str(out, in);
             out.write(("用户输入:" + jea).getBytes());
+            out.flush();
             long begintime1 = System.currentTimeMillis();
             logger.info("开始时间" + begintime1);
             if (!r.write(filepath, jea, begintime1, isRemWrite, isnextY, out, in)) {
                 throw new Danger("Cannot access File or Path!");
             } else {
                 out.write("写入成功！".getBytes());
+                out.flush();
                 logger.info("写入完成！");
             }
             out.write("\n仅限个人使用，请勿用于商业用途！！！！\n版本所有权、解释权:nserly(恩瑟莉)".getBytes());
             logger.info("仅限个人使用，请勿用于商业用途！！！！版本所有权、解释权:nserly(恩瑟莉)");
+            out.flush();
         } else if (set == 3) {
             Read r = new Read();
             r.search(filepath, begintime, out, in);
             out.write("\n仅限个人使用，请勿用于商业用途！！！！\n版本所有权、解释权:nserly(恩瑟莉)".getBytes());
             logger.info("仅限个人使用，请勿用于商业用途！！！！版本所有权、解释权:nserly(恩瑟莉)");
+            out.flush();
         } else if (a == 0) {
             Read r = new Read();
             r.read(filepath, a, out, in);
         } else {
             out.write("\n仅限个人使用，请勿用于商业用途！！！！\n版本所有权、解释权:nserly(恩瑟莉)".getBytes());
             logger.info("仅限个人使用，请勿用于商业用途！！！！版本所有权、解释权:nserly(恩瑟莉)");
+            out.flush();
             throw new CannotFindException(0, "It's not right list!");
         }
 
@@ -158,10 +168,13 @@ public class Read {
         File f = new File(filepath);
         out.write(("文件绝对路径：" + "\"" + f.getAbsolutePath() + "\"").getBytes());
         logger.info("文件绝对路径：" + "\"" + f.getAbsolutePath() + "\"");
+        out.flush();
         out.write(("文件名：" + f.getName()).getBytes());
         logger.info("文件名：" + f.getName());
+        out.flush();
         out.write(("文件是否存在：" + f.exists()).getBytes());
         logger.info("文件是否存在：" + f.exists());
+        out.flush();
         long ti = f.lastModified();
         Date date = new Date(ti);
         String strDateFormat = "yyyy-MM-dd HH:mm:ss";
@@ -169,17 +182,22 @@ public class Read {
         if (f.exists()) {
             out.write(("文件是否被隐藏：" + f.isHidden()).getBytes());
             logger.info("文件是否被隐藏：" + f.isHidden());
+            out.flush();
             out.write(("文件是否可读：" + f.canRead()).getBytes());
             logger.info("文件是否可读：" + f.canRead());
+            out.flush();
             out.write(("文件是否可写：" + f.canWrite()).getBytes());
             logger.info("文件是否可写：" + f.canWrite());
+            out.flush();
             long l = f.length();
             Read r = new Read();
             String str = "文件大小：" + r.cast(l);
             out.write(str.getBytes());
             logger.info(str);
+            out.flush();
             out.write(("文件最后修改时间：" + sdf.format(date)).getBytes());
             logger.info("文件最后修改时间：" + sdf.format(date));
+            out.flush();
         } else {
             logger.error("文件信息读取失败，请检查文件是否可以访问且存在此文件!");
         }
@@ -187,6 +205,7 @@ public class Read {
         long charter = endtime - begintime;
         out.write(("\n" + "Done!                                            运行总耗时:" + charter + "ms").getBytes());
         logger.info("Done!运行总耗时:" + charter + "ms");
+        out.flush();
 
     }
 
@@ -204,8 +223,9 @@ public class Read {
                 int length = bu.read(b);
                 logger.info("文件长度(Byte数组)" + length);
                 if (begintime != 0) {
-                    System.out.print("--------------------------[文件内容]--------------------------\n" + new String(b, 0, length));
+                    out.write(("--------------------------[文件内容]--------------------------\n" + new String(b, 0, length)).getBytes());
                     out.write("\n--------------------------------------------------------------\n".getBytes());
+                    out.flush();
                     String str = "--------------------------[文件内容]--------------------------\n" + new String(b, 0, length);
                     String str1 = str + "\n--------------------------------------------------------------\n";
                     Main.filecun(str1);
@@ -213,6 +233,7 @@ public class Read {
                     long charter = endtime - begintime;
                     out.write(("\n\n" + "Done!                                            运行总耗时:" + charter + "ms").getBytes());
                     logger.info("Done!运行总耗时:" + charter + "ms");
+                    out.flush();
                 } else {
                     Read.version = new String(b, 0, length);
                 }
@@ -293,6 +314,7 @@ public class Read {
                 long charter = endtime - begintime;
                 out.write(("\n\n" + "Done!                                            运行总耗时:" + charter + "ms").getBytes());
                 logger.info("Done!运行总耗时:" + charter + "ms");
+                out.flush();
             }
 
         }

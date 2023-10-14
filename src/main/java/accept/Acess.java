@@ -4,95 +4,107 @@ import FileStart.Run;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.OutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Acess {
+    private static int clientCount = 0; // 当前客户端连接数量
     private static Logger logger = LogManager.getLogger(Acess.class);
+    private ExecutorService executorService;
 
-    public static void access(int ServerPort, int MaxConnect, String ServerName) {
-
+    public void access(int ServerPort, int MaxConnect) {
+        executorService = Executors.newFixedThreadPool(MaxConnect);
         try {
             // 创建服务器套接字，监听指定端口
             ServerSocket serverSocket = new ServerSocket(ServerPort);
-
-            System.out.println("服务器信息：\nip:" + InetAddress.getLocalHost() + ":" + ServerPort);
-            logger.info("服务器信息：\nip:" + InetAddress.getLocalHost() + ":" + ServerPort);
+            InetAddress localhost = InetAddress.getLocalHost();
+            String ipAddress = localhost.getHostAddress();
+            System.out.println("服务器信息：\nip: " + ipAddress + ":" + ServerPort);
+            logger.info("服务器信息：\nip:" + ipAddress + ":" + ServerPort);
             System.out.println("\n\n服务器已启动，等待客户端连接...");
             logger.info("服务器已启动，等待客户端连接...");
-            // 创建线程池
-            int corePoolSize = 2; // 最小线程数
-            int maxPoolSize = MaxConnect + 1; // 最大线程数
-            long keepAliveTime = 60; // 线程空闲时间（单位：秒）
-            ThreadPoolExecutor executor = new ThreadPoolExecutor(
-                    corePoolSize, maxPoolSize, keepAliveTime, TimeUnit.SECONDS,
-                    new LinkedBlockingQueue<>());
 
             while (true) {
                 // 等待客户端连接
                 Socket clientSocket = serverSocket.accept();
+                // 检查当前连接数量
+                if (clientCount >= MaxConnect) {
+                    System.out.println("已达到最大客户端连接数量，拒绝新连接");
+                    clientSocket.close();
+                    continue;
+                }
+                // 处理客户端连接
+                clientCount++;
+                executorService.execute(new ClientHandler(clientSocket));
                 System.out.println("客户端连接成功，IP地址：" + clientSocket.getInetAddress().getHostAddress());
                 logger.info("客户端连接成功，IP地址：" + clientSocket.getInetAddress().getHostAddress());
-
-                // 提交任务给线程池处理客户端请求
-                executor.submit(new ClientHandler(clientSocket));
             }
+
         } catch (IOException e) {
             logger.error(e);
         }
     }
 
-    static class ClientHandler implements Runnable {
-        private Socket clientSocket;
+    class ClientHandler implements Runnable {
+        private Socket socket;
 
-        public ClientHandler(Socket clientSocket) {
-            this.clientSocket = clientSocket;
+        public ClientHandler(Socket socket) {
+            this.socket = socket;
         }
 
         @Override
         public void run() {
             try {
-                // 获取客户端输入流和输出流
-                InputStream inputStream = clientSocket.getInputStream();
-                OutputStream outputStream = clientSocket.getOutputStream();
+                InputStream in = socket.getInputStream();
+                OutputStream out = socket.getOutputStream();
 
-                // 读取客户端发送的数据
+                // 调用方法的线程
+                new Thread(new MethodCaller(out, in)).start();
+
                 byte[] buffer = new byte[1024];
-                int length = inputStream.read(buffer);
-                String requestData = new String(buffer, 0, length);
 
+//                while (true) {
+//                    int bytesRead = in.read(buffer);
+//                    if (bytesRead == -1) {
+//                        break;
+//                    }
+//
+//                    // 返回客户端发来的字节数组
+//                    out.write(buffer, 0, bytesRead);
+//                    out.flush();
+//                }
 
-//                System.out.println("接收到客户端数据：" + requestData);
+                // 关闭连接
+//                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-                Run r = new Run();
-                r.run(outputStream, inputStream);
-//                // 根据客户端发送的数字执行不同的方法
-//                int number = Integer.parseInt(requestData);
-//                //....
+    class MethodCaller implements Runnable {
+        private InputStream in;
+        private OutputStream out;
 
+        public MethodCaller(OutputStream out, InputStream in) {
+            this.out = out;
+            this.in = in;
+        }
 
-                // 发送响应数据给客户端
-                String responseData = "方法执行完毕";
-                outputStream.write(responseData.getBytes());
-                outputStream.flush();
-
-                // 关闭流和客户端套接字
-                outputStream.close();
-                inputStream.close();
-                clientSocket.close();
+        @Override
+        public void run() {
+            Run r = new Run();
+            try {
+                r.run(out, in);
             } catch (IOException e) {
                 logger.error(e);
             }
-
         }
-
-
     }
 }

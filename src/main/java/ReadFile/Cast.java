@@ -3,8 +3,8 @@ package ReadFile;
 import java.util.ArrayList;
 
 public class Cast {
-    public String[] Name;
-    public String[] Value;
+    public static String[] Name;
+    public static String[] Value;
 
     public Cast(String[] Input) {
         ArrayList<String> array = new ArrayList<String>();
@@ -14,14 +14,15 @@ public class Cast {
                 array.add(cache[j].replace(" ", ""));
             }
         }
-        int size = array.size();
+        int size = array.size() / 2;
         Name = new String[size];
         Value = new String[size];
+        int a = 0, b = 0;
         for (int i = 0; i < array.size(); i++) {
-            if (i % 2 == 0) {
-                Name[i] = array.get(i);
+            if ((i % 2) == 0) {
+                Name[a++] = array.get(i);
             } else {
-                Value[i / 2] = array.get(i);
+                Value[b++] = array.get(i);
             }
         }
     }

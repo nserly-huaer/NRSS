@@ -20,6 +20,7 @@ public class Scan {
         String str = null;
         Logger logger = LogManager.getLogger(Scan.class);
         out.write("请输入某个因数".getBytes());
+        out.flush();
         str = new String(scan.str(out, in));
         logger.info("请输入某个因数:" + str);
         return str;

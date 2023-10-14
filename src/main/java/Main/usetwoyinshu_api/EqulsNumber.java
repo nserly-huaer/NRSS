@@ -39,10 +39,10 @@ public class EqulsNumber implements Runnable {
     public void run() {
 //        synchronized (this) {
         if (t == 0) {
-            cacheEquals = Main.resold2(TwoThread.result1[a], TwoThread.result1[--a]);
+            cacheEquals = see.resold2(TwoThread.result1[a], TwoThread.result1[--a]);
         } else {
             if (a > 0)
-                cacheEquals = Main.resold2(TwoThread.result1[--a], cacheEquals);
+                cacheEquals = see.resold2(TwoThread.result1[--a], cacheEquals);
         }
 
         t++;

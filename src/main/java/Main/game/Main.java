@@ -55,12 +55,14 @@ public class Main {// 声明类
                 if (think > MI.add(a, b)) {
                     out.write("你猜大了".getBytes());
                     logger.info("你猜大了");
+                    out.flush();
                     if (think < max) {
                         max = think;
                     }
                 } else {
                     out.write("你猜小了".getBytes());
                     logger.info("你猜小了");
+                    out.flush();
                     if (think > min) {
                         min = think;
                     }
@@ -68,6 +70,7 @@ public class Main {// 声明类
             } else {
                 out.write("回答正确！".getBytes());
                 logger.info("回答正确！");
+                out.flush();
                 // 跳出循环
                 break;
             }
@@ -76,11 +79,13 @@ public class Main {// 声明类
         }
         // 换行
         out.write("\n".getBytes());
+        out.flush();
         // 关闭扫描器
 //        sc.close();
         // 总猜的次数
         out.write(("你共猜了" + i + "次").getBytes());
         logger.info("你共猜了" + i + "次");
+        out.flush();
         // 计算总耗时
         long endtime = System.currentTimeMillis();
         logger.info("结束时间：" + endtime);
@@ -96,5 +101,6 @@ public class Main {// 声明类
         // 输出总耗时
         out.write(("总耗时:" + minutes + "分" + seconds + "秒").getBytes());
         logger.info("总耗时:" + minutes + "分" + seconds + "秒");
+        out.flush();
     }
 }

@@ -1,23 +1,24 @@
 package Main.RunMainSoft;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Scanner;
 
 public class scan {
-    public static String str(OutputStream out, InputStream in) {
-        @SuppressWarnings("resource")
-        Scanner sc = new Scanner(System.in);
+    public static String str(OutputStream out, InputStream in) throws IOException {
         String st = null;
-        for (; ; ) {
-            st = new String(sc.nextLine());
-            st = st.trim();
-            if (!st.isEmpty())
+        for (;;) {
+            byte[] buffer = new byte[1024];
+            int length = in.read(buffer);
+            if (length == -1) {
                 break;
-
+            }
+            st = new String(buffer, 0, length);
+            if (!st.trim().isEmpty()) {
+                break;
+            }
         }
         return st;
-
     }
 
 }

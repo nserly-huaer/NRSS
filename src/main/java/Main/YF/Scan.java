@@ -14,10 +14,12 @@ public class Scan {
         Logger logger = LogManager.getLogger(Scan.class);
         out.write("示例：第一行的1、2，第二行的3、4".getBytes());
         logger.info("示例：第一行的1、2，第二行的3、4");
+        out.flush();
 
         Scanner a = new Scanner(System.in);
         out.write("请输入第一行第一个值(1)：".getBytes());
         logger.info("请输入第一行第一个值(1)：");
+        out.flush();
         String str1 = scan.str(out, in);
         double q = Double.parseDouble(str1);
         logger.info("用户输入:" + q);
@@ -25,6 +27,7 @@ public class Scan {
         Scanner b = new Scanner(System.in);
         out.write("请输入第一行第二个值(2)：".getBytes());
         logger.info("请输入第一行第二个值(2)：");
+        out.flush();
         String str2 = scan.str(out, in);
         double w = Double.parseDouble(str2);
         logger.info("用户输入:" + w);
@@ -32,6 +35,7 @@ public class Scan {
         Scanner c = new Scanner(System.in);
         out.write("请输入第二行第一个值(3)：".getBytes());
         logger.info("请输入第二行第一个值(3)：");
+        out.flush();
         String str3 = scan.str(out, in);
         double e = Double.parseDouble(str3);
         logger.info("用户输入:" + e);
@@ -39,6 +43,7 @@ public class Scan {
         Scanner d = new Scanner(System.in);
         out.write("请输入第二行第二个值(4)：".getBytes());
         logger.info("请输入第二行第二个值(4)：");
+        out.flush();
         String str4 = scan.str(out, in);
         double r = Double.parseDouble(str4);
         logger.info("用户输入:" + r);
@@ -70,16 +75,20 @@ public class Scan {
         if (bv) {
             out.write("结果：成正比例、反比例！".getBytes());
             logger.info("结果：成正比例、反比例！");
+            out.flush();
         } else if (b2) {
             out.write("结果：成正比例！".getBytes());
             logger.info("结果：成正比例！");
+            out.flush();
 
         } else if (b1) {
             out.write("结果：成反比例！".getBytes());
             logger.info("结果：成反比例！");
+            out.flush();
         } else {
             out.write("结果：不成比例！".getBytes());
             logger.info("结果：不成比例！");
+            out.flush();
         }
         Main.Finally(Starttime, out, in);
     }

@@ -10,7 +10,7 @@ import java.io.OutputStream;
 public class Main {
     public void run_Main(OutputStream out, InputStream in) throws IOException {
         Logger logger = LogManager.getLogger(Main.class);
-        Main.yinshu.Scan s = new Main.yinshu.Scan();
+        Scan s = new Scan();
         logger.info("运行-扫描器");
         long l = s._Scan(out, in);
         long begintime = System.currentTimeMillis();

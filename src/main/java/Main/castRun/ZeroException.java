@@ -14,7 +14,7 @@ public class ZeroException extends Exception {
     public ZeroException(int i, String ExceptionMessage, OutputStream out, InputStream in) throws IOException {
         super(ExceptionMessage);
         this.ExceptionMessage = ExceptionMessage;
-        Logger logger = LogManager.getLogger(Main.class);
+        Logger logger = LogManager.getLogger(set.class);
         if (i == 1) {
             out.write("输入的除数带有0，请重试！".getBytes());
         } else if (i == 2) {

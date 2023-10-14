@@ -1,29 +1,28 @@
 package Main.usetwoyinshu_api;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Scanner;
 
+import Main.yinshu_api.Mars;
+
+import java.util.Scanner;
 /**
  * &#064;Nserly
  * 此类中的成员方法说明：
  * usetime为处理时长（单位为“ms”）
  * result用于返回公因数，类型为String
  */
-public class Main {
+public class see {
     public static long usetime;
     public static String result;
 
     public static void runSoft(long firstYinshu, long secondYinshu) {
         long begintime = System.currentTimeMillis();
-        Main.yinshu_api.Main ma = new Main.yinshu_api.Main();
+        Mars ma = new Mars();
         ma.run_Main(String.valueOf(firstYinshu));
-        String a = Main.yinshu_api.Main.result;
+        String a = Mars.result;
 
         ma.run_Main(String.valueOf(secondYinshu));
-        String b = Main.yinshu_api.Main.result;
-        Main.Split(a, b);
+        String b = Mars.result;
+        see.Split(a, b);
         long endtime = System.currentTimeMillis();
         usetime = endtime - begintime;
 
@@ -32,7 +31,7 @@ public class Main {
     static void Split(String a, String b) {
         String[] first = a.split("、");
         String[] second = b.split("、");
-        result = Main.resold(first, second);
+        result = see.resold(first, second);
     }
 
     static String resold(String[] a, String[] b) {
@@ -75,10 +74,10 @@ public class Main {
         return l;
     }
 
-    public long[] Runtime(int howMany, StringBuffer str, OutputStream out, InputStream in) throws IOException {
+    public long[] Runtime(int howMany, StringBuffer str) {
         Scanner sc = new Scanner(System.in);
         for (int i = 1; i < howMany + 1; i++) {
-            out.write(("请输入第" + i + "个自然数：").getBytes());
+            System.out.println("请输入第" + i + "个自然数：");
             str = str.append(sc.nextLong());
             str = str.append("、");
         }
@@ -88,3 +87,4 @@ public class Main {
     }
 
 }
+

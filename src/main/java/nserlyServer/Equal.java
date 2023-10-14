@@ -1,6 +1,7 @@
 package nserlyServer;
 
 import Exception.NoListException;
+import ReadFile.Cast;
 import ReadFile.Write;
 import accept.Acess;
 import org.apache.logging.log4j.LogManager;
@@ -22,23 +23,20 @@ public class Equal {
     }
 
     private static boolean StartServer() {
-        String[] Name = Start.cast.Name;
-        String[] Value = Start.cast.Value;
-        int PORT = 25565;
-        String serverName = null;
-        int MaxConnect = 10;
-        for (int i = 0; i < Name.length; i++) {
-            if (Name[i].equals("ServerPort")) {
-                PORT = Integer.parseInt(Value[i]);
-            } else if (Name[i].equals("ServerName")) {
-                serverName = Value[i];
-            } else if (Name[i].equals("MaxConnect")) {
-                MaxConnect = Integer.parseInt(Value[i]);
-            }
-            Acess.access(PORT, MaxConnect, serverName);
-        }
 
-        //....
+        int PORT = 25565;
+        int MaxConnect = 10;
+
+        for (int i = 0; i < Cast.Value.length; i++) {
+            if (Cast.Name[i].equals("ServerPort")) {
+                PORT = Integer.parseInt(Cast.Value[i]);
+            }  else if (Cast.Name[i].equals("MaxConnect")) {
+                MaxConnect = Integer.parseInt(Cast.Value[i]);
+            }
+        }
+        Acess ac = new Acess();
+        ac.access(PORT, MaxConnect);
+
         return true;
     }
 

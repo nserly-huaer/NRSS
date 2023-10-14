@@ -17,6 +17,7 @@ public class ExampleClass {
         EqulsNumber e = new EqulsNumber();
         e.out.write("请输入要多少个因数".getBytes());
         logger.info("请输入要多少个因数");
+        e.out.flush();
         //在控制台中获取需要多少因数
         int howMany = sc.nextInt();
         logger.info("用户输入:" + howMany);
@@ -25,6 +26,7 @@ public class ExampleClass {
         for (int i = 1; i < howMany + 1; i++) {
             e.out.write(("请输入第" + i + "个自然数：").getBytes());
             logger.info("请输入第" + i + "个自然数：");
+           e.out.flush();
             String d = new String(String.valueOf(sc.nextLong()));
             str = str.append(d);
             logger.info("用户输入:" + d);
@@ -46,6 +48,7 @@ public class ExampleClass {
         String sr = sb.toString();
         e.out.write(("结果：公因数为：" + sr).getBytes());
         logger.info("结果：公因数为：" + sr);
+        e.out.flush();
 
         //获取结束时间
         long endtime = System.currentTimeMillis();
@@ -53,6 +56,7 @@ public class ExampleClass {
         //获取差值，用于显示运行毫秒数
         e.out.write(("总耗时：" + (endtime - begintime) + "ms").getBytes());
         logger.info("总耗时：" + (endtime - begintime) + "ms");
+        e.out.flush();
         //关闭程序
         TwoThread.end();
     }

@@ -2,10 +2,9 @@ package Main.usetwoyinshu_api;
 
 //导入包
 
-import Main.yinshu_api.Main;
+import Main.yinshu_api.Mars;
 
 import java.util.Random;
-
 /**
  * 此软件将用到2至4个线程
  */
@@ -34,7 +33,7 @@ public class TwoThread implements Runnable {
             throw new OnlyOneNumberException("Number size is one");
         }
 
-        this.number = Main.usetwoyinshu_api.Main.Slip(str);
+        this.number = see.Slip(str);
         Thread first = new Thread(this, "first");
         Thread second = new Thread(this, "second");
         first.run();
@@ -75,11 +74,11 @@ public class TwoThread implements Runnable {
 //        ma.run_Main(String.valueOf(firstYinshu));
 //        String a = com.yinshu_api.Main.result;
 
-        Main m = new Main();
+        Mars m = new Mars();
         if (!(times >= howMany)) {
             m.run_Main(String.valueOf(number[times]));
             //        long[] l = StringTolong.Cast(Main.result);
-            String a = Main.yinshu_api.Main.result;
+            String a = Mars.result;
             long[] l = StringTolong.Cast(a);
             TwoThread.result1[times] = l;
             times++;

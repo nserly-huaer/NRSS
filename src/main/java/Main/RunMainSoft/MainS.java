@@ -1,6 +1,5 @@
 package Main.RunMainSoft;
 
-import Main.castRun.Main;
 import Main.fileRun.CannotFindException;
 import Main.fileRun.Read;
 import Main.usetwoyinshu_api.ExampleClass;
@@ -50,7 +49,7 @@ public class MainS {
         return result;
     }
 
-    public static boolean townd(OutputStream out, InputStream in) throws IOException {
+    public static boolean townd(final OutputStream out,final InputStream in) throws IOException {
         Logger logger = LogManager.getLogger(MainS.class);
         try {
             logger.info("用户控制：运行-比例求比器");
@@ -94,6 +93,7 @@ public class MainS {
         try {
             logger.info("用户控制：运行-文件管理");
             out.write("请继续输入;1.读取文件内容;2.写入文件内容;3.查看文件属性 =-=输入back返回=-=".getBytes());
+            out.flush();
             logger.info("软件：1.读取文件内容;2.写入文件内容;3.查看文件属性");
             GotoMath = false;
             GotoFileWatch = true;
@@ -104,12 +104,15 @@ public class MainS {
                 GotoFileWatch = false;
                 isGoing = true;
                 logger.info("用户控制：返回上一步");
+
                 out.write("\n".getBytes());
+                out.flush();
                 Run r1 = new Run();
                 r1.d(out, in);
                 return true;
             } else if (ST1.equals("$exit")) {
                 out.write("已退出".getBytes());
+                out.flush();
                 logger.info("用户控制：关闭程序");
                 logger.info("已退出");
                 Run.end = true;
@@ -118,6 +121,7 @@ public class MainS {
             @SuppressWarnings("removal") Integer it = new Integer(ST1);
             int ST = it.intValue();
             out.write("请输入文件路径".getBytes());
+            out.flush();
             logger.info("控制台提示：请输入文件路径");
             String str = scan.str(out, in);
             String str2 = str.trim();
@@ -139,17 +143,20 @@ public class MainS {
         Logger logger = LogManager.getLogger(MainS.class);
         try {
             logger.info("用户控制：运行-简化器");
-            Main.castRun.Main cm = new Main.castRun.Main();
+            Main.castRun.set cm = new Main.castRun.set();
 //            out.write("-------------------免费声明：此程序处于测试阶段，有误差（误差不大），预计于2023/8/1正式发布-------------------");
             cm.runfirst(out, in);
-            String end = "------------------------------结果： " + (long) Main.bcs + ":" + (long) Main.cs + "------------------------------";
+            String end = "------------------------------结果： " + (long) Main.castRun.set.bcs + ":" + (long) Main.castRun.set.cs + "------------------------------";
             String end1 = end.replace('-', '\s');
             end1 = end1.trim();
             out.write(end.getBytes());
+            out.flush();
             logger.info(end1);
-            out.write(("\n\n" + "Done!                                            运行总耗时:" + Main.chartertime + "ms").getBytes());
-            logger.info("Done!运行总耗时:" + Main.chartertime + "ms");
+            out.write(("\n\n" + "Done!                                            运行总耗时:" + Main.castRun.set.chartertime + "ms").getBytes());
+            out.flush();
+            logger.info("Done!运行总耗时:" + Main.castRun.set.chartertime + "ms");
             out.write("\n仅限个人使用，请勿用于商业用途！！！！\n版本所有权、解释权:nserly(恩瑟莉)".getBytes());
+            out.flush();
             logger.info("仅限个人使用，请勿用于商业用途！！！！版本所有权、解释权:nserly(恩瑟莉)");
         } catch (Exception e) {
             centel(e, true, out, in);
@@ -179,6 +186,7 @@ public class MainS {
         if (isInputIntoConsole) {
             out.write((e.getClass().getName() + ": " + e.getMessage()).getBytes());
             out.write(sbException.toString().getBytes());
+            out.flush();
         }
     }
 

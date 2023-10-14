@@ -21,6 +21,7 @@ public class First implements Test {
         double qwe = q.divide(weer, 14, RoundingMode.HALF_UP).doubleValue();
         out.write(("结果：值为: \n" + qwe).getBytes());
         logger.info(qwe);
+        out.flush();
 
     }
 
@@ -33,6 +34,7 @@ public class First implements Test {
         double qwe = q.divide(weer, 14, RoundingMode.HALF_UP).doubleValue();
         out.write(("结果：值为: \n" + qwe).getBytes());
         logger.info(qwe);
+        out.flush();
     }
 
     // 未知量为o
@@ -45,6 +47,7 @@ public class First implements Test {
         double qwe = q.divide(weer, 14, RoundingMode.HALF_UP).doubleValue();
         out.write(("结果：值为: \n" + qwe).getBytes());
         logger.info(qwe);
+        out.flush();
     }
 
     // 未知量为p
@@ -57,6 +60,7 @@ public class First implements Test {
         double qwe = q.divide(weer, 14, RoundingMode.HALF_UP).doubleValue();
         out.write(("结果：值为: \n" + qwe).getBytes());
         logger.info(qwe);
+        out.flush();
     }
 
 }
