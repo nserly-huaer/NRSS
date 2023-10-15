@@ -10,7 +10,7 @@ import java.io.OutputStream;
 public class There {
     static long starttime;
 
-    void cheack(double u, double i, double o, double p, OutputStream out, InputStream in) throws NoNullException, IOException {
+    public void cheack(double u, double i, double o, double p, OutputStream out, InputStream in) throws NoNullException, IOException {
 
         Logger logger = LogManager.getLogger(First.class);
         First f = new First();

@@ -51,7 +51,7 @@ public class TwoThread implements Runnable {
         EqulsNumber eq = new EqulsNumber();
         EqulsNumber.a = TwoThread.times;
         EqulsNumber e = new EqulsNumber();
-        eq.Equals(e.out, e.in);
+        eq.Equals();
         result = EqulsNumber.cacheEquals;
         return true;
     }

@@ -24,7 +24,7 @@ public class MainS {
         logger.info("用户控制：运行-多数公因数求解器");
 //        out.write("-------------------声明：此程序处于测试阶段，有误差（误差不大），预计于2023/10/2正式发布-------------------");
         try {
-            ExampleClass.Example();
+            ExampleClass.Example(in, out);
 
         } catch (ZeroNumberException | OnlyOneNumberException e) {
             centel(e, true, out, in);
@@ -49,7 +49,7 @@ public class MainS {
         return result;
     }
 
-    public static boolean townd(final OutputStream out,final InputStream in) throws IOException {
+    public static boolean townd(final OutputStream out, final InputStream in) throws IOException {
         Logger logger = LogManager.getLogger(MainS.class);
         try {
             logger.info("用户控制：运行-比例求比器");

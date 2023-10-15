@@ -47,6 +47,7 @@ public class Acess {
             }
 
         } catch (IOException e) {
+            clientCount--;
             logger.error(e);
         }
     }

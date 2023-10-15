@@ -1,7 +1,5 @@
 package Main.usetwoyinshu_api;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Random;
 
 public class EqulsNumber implements Runnable {
@@ -10,13 +8,11 @@ public class EqulsNumber implements Runnable {
     public static long[] cacheEquals;
 
     public static int a = 0;
-    public OutputStream out;
-    public InputStream in;
+
 
     //运行成功返回true；否则返回false
-    public boolean Equals(OutputStream out, InputStream in) {
-        this.in = in;
-        this.out = out;
+    public boolean Equals() {
+
         int a = TwoThread.times;
         Thread t1 = new Thread(this, "third");
         Thread t2 = new Thread(this, "forth");
