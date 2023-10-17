@@ -1,5 +1,6 @@
 package accept;
 
+import Exception.InputException;
 import FileStart.Run;
 import command.Command;
 import org.apache.logging.log4j.LogManager;
@@ -100,9 +101,13 @@ public class Acess {
 
         @Override
         public void run() {
-            while (true){
+            while (true) {
                 Scanner sc = new Scanner(System.in);
-                Command com = new Command(sc.nextLine());
+                try {
+                    Command com = new Command(sc.nextLine());
+                } catch (InputException e) {
+                    logger.error(e);
+                }
             }
         }
     }
