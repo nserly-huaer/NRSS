@@ -1,6 +1,7 @@
 package accept;
 
 import FileStart.Run;
+import command.Command;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,6 +11,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,6 +22,9 @@ public class Acess {
     public static int ServerPort;
 
     public void access(int ServerPort, int MaxConnect) {
+        ScanCommand com = new ScanCommand();
+        Thread t1 = new Thread(com, "Scan");
+        t1.start();
         Acess.ServerPort = ServerPort;
         executorService = Executors.newFixedThreadPool(MaxConnect);
         try {
@@ -70,7 +75,6 @@ public class Acess {
 
                 // 调用方法的线程
                 new Thread(new MethodCaller(out, in)).start();
-
                 byte[] buffer = new byte[1024];
 
 //                while (true) {
@@ -88,6 +92,17 @@ public class Acess {
 //                socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    class ScanCommand implements Runnable {
+
+        @Override
+        public void run() {
+            while (true){
+                Scanner sc = new Scanner(System.in);
+                Command com = new Command(sc.nextLine());
             }
         }
     }

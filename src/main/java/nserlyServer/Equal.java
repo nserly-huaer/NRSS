@@ -30,12 +30,13 @@ public class Equal {
         for (int i = 0; i < Cast.Value.length; i++) {
             if (Cast.Name[i].equals("ServerPort")) {
                 PORT = Integer.parseInt(Cast.Value[i]);
-            }  else if (Cast.Name[i].equals("MaxConnect")) {
+            } else if (Cast.Name[i].equals("MaxConnect")) {
                 MaxConnect = Integer.parseInt(Cast.Value[i]);
             }
         }
         Acess ac = new Acess();
         ac.access(PORT, MaxConnect);
+
 
         return true;
     }
