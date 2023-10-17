@@ -29,7 +29,7 @@ public class Start {
                 logger.info("管理员控制：关闭服务器");
                 System.out.println("服务器已关闭");
                 logger.info("Server Closed");
-                return;
+                System.exit(1);
             }
             Cast cast = new Cast(Read.Loading());
             try {
