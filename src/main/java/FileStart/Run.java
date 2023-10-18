@@ -26,7 +26,7 @@ public class Run {
         boolean dd = false;
         Logger logger = LogManager.getLogger(Run.class);
         String SP1;
-        out.write("\n-----------软件七合一(软件所有权归nserly所有，未经允许，禁止复制、摘用!)-----------\n".getBytes());
+        out.write("-----------软件七合一(软件所有权归nserly所有，未经允许，禁止复制、摘用!)-----------\n".getBytes());
         logger.info("-----------软件七合一(软件所有权：nserly;未经允许，禁止复制!)-----------");
         out.flush();
 //        System.out.println("-----------------------------输入$Exit退出-----------------------------");

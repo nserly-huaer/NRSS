@@ -1,8 +1,13 @@
 package command;
 
+import accept.Acess;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import Exception.InputException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class Command {
     private static final Logger logger = LogManager.getLogger(Command.class);
@@ -57,6 +62,18 @@ public class Command {
 
             //....
         }
+    }
+
+    public static void reDelay(long ClientTime, OutputStream out, InputStream in) {
+        long serverTime = System.currentTimeMillis();
+        System.out.println("服务器与客户端延迟为：" + (serverTime - ClientTime) + "ms");
+        String str = "delay " + serverTime;
+        try {
+            out.write(str.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     //获取客户端延迟

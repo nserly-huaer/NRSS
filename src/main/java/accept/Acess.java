@@ -2,6 +2,7 @@ package accept;
 
 import Exception.InputException;
 import FileStart.Run;
+import Main.RunMainSoft.scan;
 import command.Command;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -61,7 +62,9 @@ public class Acess {
         }
     }
 
-    class ClientHandler implements Runnable {
+    public class ClientHandler implements Runnable {
+        public OutputStream out = null;
+        public InputStream in = null;
         private Socket socket;
 
         public ClientHandler(Socket socket) {
@@ -71,8 +74,8 @@ public class Acess {
         @Override
         public void run() {
             try {
-                InputStream in = socket.getInputStream();
-                OutputStream out = socket.getOutputStream();
+                in = socket.getInputStream();
+                out = socket.getOutputStream();
 
                 // 调用方法的线程
                 new Thread(new MethodCaller(out, in)).start();
@@ -92,7 +95,8 @@ public class Acess {
                 // 关闭连接
 //                socket.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                Acess.clientCount--;
+                logger.error(e);
             }
         }
     }
@@ -106,6 +110,7 @@ public class Acess {
                 try {
                     Command com = new Command(sc.nextLine());
                 } catch (InputException e) {
+                    Acess.clientCount--;
                     logger.error(e);
                 }
             }
@@ -127,6 +132,7 @@ public class Acess {
             try {
                 r.run(out, in);
             } catch (IOException e) {
+                Acess.clientCount--;
                 logger.error(e);
             }
         }
