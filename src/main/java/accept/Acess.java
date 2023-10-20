@@ -103,20 +103,20 @@ public class Acess {
                 out = socket.getOutputStream();
 
                 // 调用方法的线程
-                new Thread(new MethodCaller(out, in)).start();
-                String st = null;
-                for (; ; ) {
-                    byte[] buffer = new byte[1024];
-                    int length = in.read(buffer);
-                    if (length == -1) {
-                        break;
-                    }
-                    st = new String(buffer, 0, length);
-                    if (st.startsWith("exit")) {
-                        Acess.clientCount--;
-                        socket.close();
-                    }
-                }
+                new Thread(new MethodCaller(out, in, socket)).start();
+//                String st = null;
+//                for (; ; ) {
+//                    byte[] buffer = new byte[1024];
+//                    int length = in.read(buffer);
+//                    if (length == -1) {
+//                        break;
+//                    }
+//                    st = new String(buffer, 0, length);
+//                    if (st.startsWith("exit")) {
+//                        Acess.clientCount--;
+//                        socket.close();
+//                    }
+//                }
 //                byte[] buffer = new byte[1024];
 //
 //                while (true) {
@@ -153,13 +153,25 @@ public class Acess {
         }
     }
 
-    class MethodCaller implements Runnable {
+    public static class MethodCaller implements Runnable {
         private InputStream in;
         private OutputStream out;
+        private Socket socket;
 
-        public MethodCaller(OutputStream out, InputStream in) {
+
+        public MethodCaller(OutputStream out, InputStream in, Socket socket) {
             this.out = out;
             this.in = in;
+            this.socket = socket;
+        }
+
+        public void end() {
+            try {
+                this.socket.close();
+                Acess.clientCount--;
+            } catch (IOException e) {
+                logger.error(e);
+            }
         }
 
         @Override
@@ -170,6 +182,8 @@ public class Acess {
             } catch (IOException e) {
                 Acess.clientCount--;
                 logger.error(e);
+            } finally {
+                end();
             }
         }
     }

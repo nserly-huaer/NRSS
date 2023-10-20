@@ -35,7 +35,7 @@ public class MathsC {
             out.flush();
             logger.info("已退出");
             Run.end = true;
-            return true;
+            return false;
 
         }
         int index = Integer.parseInt(str);

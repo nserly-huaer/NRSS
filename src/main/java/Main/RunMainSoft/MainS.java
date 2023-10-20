@@ -116,7 +116,7 @@ public class MainS {
                 logger.info("用户控制：关闭程序");
                 logger.info("已退出");
                 Run.end = true;
-                return true;
+                return false;
             }
             @SuppressWarnings("removal") Integer it = new Integer(ST1);
             int ST = it.intValue();

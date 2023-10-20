@@ -1,6 +1,7 @@
 package Main.RunMainSoft;
 
 import command.Command;
+import accept.Acess;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,20 +18,21 @@ public class scan {
                 break;
             }
             st = new String(buffer, 0, length);
-            if (st.startsWith("getDelay")) {
+            if (st.toLowerCase().equals("cache")) {
+                continue;
+            } else if (st.toLowerCase().startsWith("getdelay")) {
                 Command.reDelay(System.currentTimeMillis(), out, in);
                 continue;
-            } else if (st.equals("exit"))
-                continue;
-
+            } else if (st.toLowerCase().startsWith("messagesender")) {
+                String[] str = st.split(" ", 2);
+                st = str[1];
+                break;
+            }
 
             if (!st.trim().isEmpty()) {
                 break;
             }
-            if (st.equals("messageSender")) {
-                String[] str = st.split(" ", 2);
-                st = str[1];
-            }
+
         }
 
         return st;

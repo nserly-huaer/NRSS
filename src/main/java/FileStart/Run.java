@@ -19,10 +19,13 @@ public class Run {
         // org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(Default.class);
         while (true) {
             boolean ad = d(out, in);
+            if (!ad) {
+                break;
+            }
         }
     }
 
-    public boolean d(final OutputStream out,final InputStream in) throws IOException {
+    public boolean d(final OutputStream out, final InputStream in) throws IOException {
         boolean dd = false;
         Logger logger = LogManager.getLogger(Run.class);
         String SP1;
@@ -87,9 +90,9 @@ public class Run {
 
         }
         if (!dd) {
-            out.write("运行中触发异常，请与开发者联系！\n".getBytes());
-            out.flush();
-            return true;
+//            out.write("运行中触发异常，请与开发者联系！\n".getBytes());
+//            out.flush();
+            return false;
         }
         return true;
     }
