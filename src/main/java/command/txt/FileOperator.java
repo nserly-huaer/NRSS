@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class FileOperator {
-    private static final File PATH = new File("BlackList");
+    private static final File PATH = new File("BlackList.properties");
     private static final Logger logger = LogManager.getLogger(FileOperator.class);
 
     public FileOperator() {
@@ -21,6 +21,7 @@ public class FileOperator {
     }
 
     public void Write(String IP) {
+        IP += "\n";
         FileOutputStream f = null;
         BufferedOutputStream bu = null;
         try {

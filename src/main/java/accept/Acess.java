@@ -145,10 +145,8 @@ public class Acess {
                 Scanner sc = new Scanner(System.in);
                 try {
                     String str = sc.nextLine();
-
-                    Command com = new Command(sc.nextLine());
+                    Command com = new Command(str);
                 } catch (InputException e) {
-                    Acess.clientCount--;
                     logger.error(e);
                 }
             }
@@ -163,9 +161,7 @@ public class Acess {
             this.out = out;
             this.in = in;
         }
-        public static void send(){
 
-        }
         @Override
         public void run() {
             Run r = new Run();
