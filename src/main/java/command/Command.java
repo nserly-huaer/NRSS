@@ -40,6 +40,9 @@ public class Command {
         } else if (cache[0].toLowerCase().equals("ban")) {
             if (b) ban(cache[1]);
             else throw new InputException("参数不正确，请重试");
+        } else if (cache[0].equals("connectIP")) {
+            connectIP();
+
         } else {
             logger.error("命令有误，请重试~");
         }
@@ -72,6 +75,7 @@ public class Command {
         String str = "delay " + serverTime;
         try {
             out.write(str.getBytes());
+            out.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

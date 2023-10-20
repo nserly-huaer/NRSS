@@ -27,7 +27,12 @@ public class scan {
             if (!st.trim().isEmpty()) {
                 break;
             }
+            if (st.equals("messageSender")) {
+                String[] str = st.split(" ", 2);
+                st = str[1];
+            }
         }
+
         return st;
     }
 
