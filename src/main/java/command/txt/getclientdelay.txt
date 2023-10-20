@@ -1,8 +1,6 @@
 获取客户端到服务器之间的延迟
 
-getclientdelay [ClientName]
 getclientdelay [ClientIP]
-ClientName                      客户端名称
 ClientIP                        客户端ip地址
 
 示例：

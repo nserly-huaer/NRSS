@@ -12,6 +12,10 @@ public class Start {
     static Logger logger = LogManager.getLogger(Read.class);
 
     public static void main(String[] args) {
+        Do();
+    }
+
+    public static void Do() {
         System.out.println("----------------------软件七合一（服务端beta-1.83）by nserly----------------------");
         logger.info("软件七合一（服务端beta-1.13）by nserly");
         int resize = Read.Check();
@@ -40,6 +44,7 @@ public class Start {
 
 
         }
+
 
     }
 }

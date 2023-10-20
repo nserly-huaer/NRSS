@@ -20,7 +20,9 @@ public class scan {
             if (st.startsWith("getDelay")) {
                 Command.reDelay(System.currentTimeMillis(), out, in);
                 continue;
-            }
+            } else if (st.equals("exit"))
+                continue;
+
 
             if (!st.trim().isEmpty()) {
                 break;

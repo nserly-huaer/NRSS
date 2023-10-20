@@ -1,8 +1,7 @@
 向客户端发送消息
 
-send [ClientName] [message]
 send [ClientIP] [message]
-ClientName                  客户端名称
+
 ClientIP                       客户端ip地址
 message                     发送信息（如果含有空格，请使用在发送信息前后写上"）
 

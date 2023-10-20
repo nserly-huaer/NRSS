@@ -13,17 +13,28 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Acess {
+    public static ArrayList<String> arrayList = new ArrayList<String>();
     private static int clientCount = 0; // 当前客户端连接数量
     private static Logger logger = LogManager.getLogger(Acess.class);
     private ExecutorService executorService;
     public static int ServerPort;
+    private static int MaxConnect;
+
+    public static void Restart() {
+        System.out.println("服务器重启完成");
+        logger.info("服务器重启完成");
+        Acess ac = new Acess();
+        ac.access(ServerPort, MaxConnect);
+    }
 
     public void access(int ServerPort, int MaxConnect) {
+        Acess.MaxConnect = MaxConnect;
         ScanCommand com = new ScanCommand();
         Thread t1 = new Thread(com, "Scan");
         t1.start();
@@ -53,6 +64,7 @@ public class Acess {
                 clientCount++;
                 executorService.execute(new ClientHandler(clientSocket));
                 System.out.println("客户端连接成功，IP地址：" + clientSocket.getInetAddress().getHostAddress());
+                arrayList.add(clientSocket.getInetAddress().getHostAddress());
                 logger.info("客户端连接成功，IPv4地址：" + clientSocket.getInetAddress().getHostAddress());
             }
 
@@ -63,13 +75,26 @@ public class Acess {
     }
 
     public class ClientHandler implements Runnable {
+        private static ArrayList<Socket> socketList = new ArrayList<>();
         public OutputStream out = null;
         public InputStream in = null;
         private Socket socket;
 
         public ClientHandler(Socket socket) {
+            socketList.add(socket);
             this.socket = socket;
         }
+
+        public static void close() {
+            for (Socket socket : socketList) {
+                try {
+                    socket.close();
+                } catch (Exception e) {
+                    logger.error(e);
+                }
+            }
+        }
+
 
         @Override
         public void run() {
@@ -79,17 +104,28 @@ public class Acess {
 
                 // 调用方法的线程
                 new Thread(new MethodCaller(out, in)).start();
-                byte[] buffer = new byte[1024];
-
+                String st = null;
+                for (; ; ) {
+                    byte[] buffer = new byte[1024];
+                    int length = in.read(buffer);
+                    if (length == -1) {
+                        break;
+                    }
+                    st = new String(buffer, 0, length);
+                    if (st.startsWith("exit")) {
+                        Acess.clientCount--;
+                        socket.close();
+                    }
+                }
+//                byte[] buffer = new byte[1024];
+//
 //                while (true) {
 //                    int bytesRead = in.read(buffer);
 //                    if (bytesRead == -1) {
 //                        break;
 //                    }
+//                    if()
 //
-//                    // 返回客户端发来的字节数组
-//                    out.write(buffer, 0, bytesRead);
-//                    out.flush();
 //                }
 
                 // 关闭连接
@@ -108,6 +144,8 @@ public class Acess {
             while (true) {
                 Scanner sc = new Scanner(System.in);
                 try {
+                    String str = sc.nextLine();
+
                     Command com = new Command(sc.nextLine());
                 } catch (InputException e) {
                     Acess.clientCount--;
@@ -125,7 +163,9 @@ public class Acess {
             this.out = out;
             this.in = in;
         }
+        public static void send(){
 
+        }
         @Override
         public void run() {
             Run r = new Run();

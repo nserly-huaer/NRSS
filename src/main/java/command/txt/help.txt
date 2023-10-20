@@ -5,6 +5,7 @@ help 帮助你了解代码
 restart 重启服务器：此操作将断开与客户端的连接并将服务器重启，未保存的数据将可能丢失！
 send 向客户端发送消息
 stop 停止服务器
+connectIP 查看服务器连接的所有ip
 
 help [command]
 command                 命令名
