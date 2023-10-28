@@ -20,13 +20,12 @@ public class MathsC {
         logger.info("用户输入：" + str);
         str = str.toLowerCase();
         if (str.equals("back")) {
-            MainS.GotoMath = false;
-            MainS.isGoing = true;
+            Run r = new Run();
+            r.setGotoMath(false);
             dd = true;
             logger.info("用户控制：返回上一步");
             out.write("\n".getBytes());
             out.flush();
-            Run r = new Run();
             r.d(out, in);
             return true;
         } else if (str.equals("$exit")) {
@@ -39,13 +38,14 @@ public class MathsC {
 
         }
         int index = Integer.parseInt(str);
+        MainS m = new MainS();
         switch (index) {
-            case 1 -> dd = MainS.townd(out, in);//比例求比器
-            case 2 -> dd = MainS.YFd(out, in);//查看是否成比例
-            case 3 -> dd = MainS.castRund(out, in);//化简器
-            case 4 -> dd = MainS.yin_shu(out, in);//因数求解器
-            case 5 -> dd = MainS.usetwoyinshu(out, in);//多数公因数求解器[beta]
-            default -> MainS.error(out, in);
+            case 1 -> dd = m.townd(out, in);//比例求比器
+            case 2 -> dd = m.YFd(out, in);//查看是否成比例
+            case 3 -> dd = m.castRund(out, in);//化简器
+            case 4 -> dd = m.yin_shu(out, in);//因数求解器
+            case 5 -> dd = m.usetwoyinshu(out, in);//多数公因数求解器[beta]
+            default -> m.error(out, in);
         }
 
 

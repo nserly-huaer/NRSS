@@ -80,8 +80,9 @@ public class set {
 //        int think[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89,
 //                97};
         try {
+            MAX m = new MAX();
             a:
-            for (int i = 2; i <= MAX.min(bcs123, cs123); i++) {
+            for (int i = 2; i <= m.min(bcs123, cs123); i++) {
                 b:
                 for (; ; ) {
                     if (bcs123 == cs123) {
@@ -97,7 +98,7 @@ public class set {
                 }
             }
         } catch (Exception e) {
-            MainS.centel(e, false, out, in);
+            MainS.centel(e, false, out);
             return false;
         }
         set.bcs = bcs123;

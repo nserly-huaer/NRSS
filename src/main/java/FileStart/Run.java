@@ -12,6 +12,15 @@ import java.io.OutputStream;
 
 public class Run {
     public static boolean end;
+    private boolean GotoMath = false;
+
+    public boolean getGotoMath() {
+        return GotoMath;
+    }
+
+    public void setGotoMath(final boolean GotoMath) {
+        this.GotoMath = GotoMath;
+    }
 
     public void run(OutputStream out, InputStream in) throws IOException {
         out.write("                                  <输入$Exit退出>\n".getBytes());
@@ -29,20 +38,18 @@ public class Run {
         boolean dd = false;
         Logger logger = LogManager.getLogger(Run.class);
         String SP1;
-        out.write("-----------软件七合一(软件所有权归nserly所有，未经允许，禁止复制、摘用!)-----------\n".getBytes());
-        logger.info("-----------软件七合一(软件所有权：nserly;未经允许，禁止复制!)-----------");
+        out.write("-----------软件六合一(软件所有权归nserly所有，未经允许，禁止复制、摘用!)-----------\n".getBytes());
+        logger.info("-----------软件六合一(软件所有权：nserly;未经允许，禁止复制!)-----------");
         out.flush();
 //        System.out.println("-----------------------------输入$Exit退出-----------------------------");
 //        logger.info("输入$Exit退出");
-        if (MainS.GotoMath) {
-            dd = MainS.Maths_C(out, in);
-            return true;
-        } else if (MainS.GotoFileWatch) {
-            dd = MainS.fileRund(out, in);
+        if (getGotoMath()) {
+            MainS Main = new MainS();
+            dd = Main.Maths_C(out, in);
             return true;
         }
-        out.write("请输入你要运行的软件(1.数学工具;2.文件管理;3.猜数字（游戏）)\n".getBytes());
-        logger.info("软件：1.数学工具;2.文件管理;3.猜数字");
+        out.write("请输入你要运行的软件(1.数学工具;2.猜数字（游戏）)\n".getBytes());
+        logger.info("软件：1.数学工具;2.猜数字");
         out.flush();
         SP1 = scan.str(out, in);
         int SP = 0;
@@ -66,29 +73,27 @@ public class Run {
             try {
                 Thread.sleep(5);
             } catch (InterruptedException e) {
-                MainS.centel(e, true, out, in);
+                MainS.centel(e, true, out);
             }
             return true;
-        } else {
-            try {
-                MainS.isGoing = false;
-                SP2 = Integer.valueOf(SP1);
-                SP = SP2.intValue();
-            } catch (Exception e) {
-                MainS.centel(e, true, out, in);
-                return true;
-            }
-
-            //switch表达式
-            switch (SP) {
-                case 1 -> dd = MainS.Maths_C(out, in);
-                case 2 -> dd = MainS.fileRund(out, in);
-                case 3 -> dd = MainS.gamed(out, in);
-                default -> MainS.error(out, in);
-
-            }
+        }
+        try {
+            SP2 = Integer.valueOf(SP1);
+            SP = SP2.intValue();
+        } catch (Exception e) {
+            MainS.centel(e, true, out);
+            return true;
+        }
+        MainS m = new MainS();
+        //switch表达式
+        switch (SP) {
+            case 1 -> dd = m.Maths_C(out, in);
+            case 2 -> dd = m.gamed(out, in);
+            default -> MainS.error(out, in);
 
         }
+
+
         if (!dd) {
 //            out.write("运行中触发异常，请与开发者联系！\n".getBytes());
 //            out.flush();
@@ -97,3 +102,4 @@ public class Run {
         return true;
     }
 }
+

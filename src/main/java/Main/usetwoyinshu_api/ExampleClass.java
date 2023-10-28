@@ -12,7 +12,7 @@ import java.io.OutputStream;
  * 示例代码：可供程序员学习如何调用方法的示例
  */
 public class ExampleClass {
-    public static void Example(InputStream in, OutputStream out) throws ZeroNumberException, OnlyOneNumberException, IOException {
+    public void Example(InputStream in, OutputStream out) throws ZeroNumberException, OnlyOneNumberException, IOException {
         Logger logger = LogManager.getLogger(ExampleClass.class);
         //创建扫描器
         EqulsNumber e = new EqulsNumber();
@@ -40,7 +40,8 @@ public class ExampleClass {
         int len = str.length() - 1;
         str = str.deleteCharAt(len);
         //将StringBuffer对象换成long数组
-        long[] l = ExampleClass.Run(howMany, str);
+        ExampleClass e1 = new ExampleClass();
+        long[] l = e1.Run(howMany, str);
         StringBuffer sb = new StringBuffer();
         for (long i : l) {
             sb.append(i + "、");
@@ -62,7 +63,7 @@ public class ExampleClass {
         TwoThread.end();
     }
 
-    public static long[] Run(int howMany, StringBuffer str) throws ZeroNumberException, OnlyOneNumberException {
+    public long[] Run(int howMany, StringBuffer str) throws ZeroNumberException, OnlyOneNumberException {
         //创建对象实例化
         TwoThread tw = new TwoThread(howMany, str);
 

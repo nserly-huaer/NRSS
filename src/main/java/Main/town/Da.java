@@ -11,7 +11,7 @@ import java.util.InputMismatchException;
 
 public class Da {
 
-    public static void demo(final OutputStream out,final InputStream in) throws error {
+    public void demo(final OutputStream out,final InputStream in) throws error {
         Logger logger = LogManager.getLogger(Da.class);
         try {
             out.write("-------------------如果是未知量，请写0（零）！！！-------------------\n".getBytes());

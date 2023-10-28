@@ -16,7 +16,7 @@ public class MAX {
         return returnvalue;
     }
 
-    public static long min(long vaule1, long value2) throws CannotCastException {
+    public long min(long vaule1, long value2) throws CannotCastException {
 
         long returnvalue = 0;
         if (vaule1 <= value2) {

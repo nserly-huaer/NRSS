@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.Date;
 
 public class Main {
-    public void Wrin(String title, StringBuilder Message, OutputStream out, InputStream in) {
+    public void Wrin(String title, StringBuilder Message, OutputStream out) {
         File f = new File("logs/data/error.log");
         FileOutputStream f1 = null;
         BufferedOutputStream bu = null;

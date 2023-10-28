@@ -24,7 +24,7 @@ public class Main {
         logger.info("仅限个人使用，请勿用于商业用途！！！！版权所有权、解释权：nserly(恩瑟莉)");
     }
 
-    public static void Run1(OutputStream out, InputStream in) throws IOException {
+    public void Run1(OutputStream out, InputStream in) throws IOException {
 
         try {
             Scan sc = new Scan();
@@ -34,20 +34,20 @@ public class Main {
             try {
                 throw new error("Input Error");
             } catch (error e1) {
-                MainS.centel(e1, true,out, in);
+                MainS.centel(e1, true,out);
             }
         }
     }
 
-    public static void main(OutputStream out, InputStream in) throws IOException {
+    public void main(OutputStream out, InputStream in) throws IOException {
         try {
             Run1(out, in);
         } catch (Exception e) {
-            MainS.centel(e, true,out, in);
+            MainS.centel(e, true,out);
             try {
                 Thread.sleep(500);
             } catch (Exception e1) {
-                MainS.centel(e, true,out, in);
+                MainS.centel(e, true,out);
             }
         }
 

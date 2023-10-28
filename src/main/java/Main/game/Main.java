@@ -10,16 +10,14 @@ import java.io.OutputStream;
 import java.util.Random;
 
 public class Main {// 声明类
-    // 创建成员变量
-    String Check;
 
     // 创建main()方法
-    public static void main(OutputStream out, InputStream in) throws IOException {
+    public void main(OutputStream out, InputStream in) throws IOException {
         // 用main()静态方法调用start()静态方法
         start(out, in);
     }
 
-    public static void start(OutputStream out, InputStream in) throws IOException {
+    public void start(OutputStream out, InputStream in) throws IOException {
         Logger logger = LogManager.getLogger(Main.class);
         // 获取开始前的时间值
         long beingtime = System.currentTimeMillis();

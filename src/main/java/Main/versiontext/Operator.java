@@ -17,7 +17,7 @@ public class Operator {
         try {
             Thread.sleep(15);
         } catch (InterruptedException e) {
-            MainS.centel(e, true, out, in);
+            MainS.centel(e, true, out);
         }
         String list = "软件版本:" + version;
         logger.info(list);

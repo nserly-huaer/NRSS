@@ -14,7 +14,7 @@ public class see {
     public static long usetime;
     public static String result;
 
-    public static void runSoft(long firstYinshu, long secondYinshu) {
+    public void runSoft(long firstYinshu, long secondYinshu) {
         long begintime = System.currentTimeMillis();
         Mars ma = new Mars();
         ma.run_Main(String.valueOf(firstYinshu));
@@ -61,10 +61,11 @@ public class see {
         StringBuilder str1 = new StringBuilder(cache);
         int len = str1.length() - 1;
         str1 = str1.deleteCharAt(len);
-        return StringTolong.Cast(str1.toString());
+        StringTolong s = new StringTolong();
+        return s.Cast(str1.toString());
     }
 
-    public static long[] Slip(StringBuffer str) {
+    public long[] Slip(StringBuffer str) {
         String str1 = str.toString();
         String[] str2 = str1.split("、");
         long[] l = new long[str2.length];
