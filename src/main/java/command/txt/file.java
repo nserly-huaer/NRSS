@@ -60,6 +60,35 @@ public class file {
         }
     }
 
+    public static void Write(String IP) {
+        FileOutputStream f = null;
+        BufferedOutputStream bu = null;
+        try {
+            f = new FileOutputStream(PATH, true);
+            bu = new BufferedOutputStream(f);
+            bu.write(IP.getBytes());
+            bu.write("\n".getBytes());
+            bu.flush();
+        } catch (IOException e) {
+            logger.error(e);
+        } finally {
+            if (bu != null) {
+                try {
+                    bu.close();
+                } catch (IOException e) {
+                    logger.error(e);
+                }
+            }
+            if (f != null) {
+                try {
+                    f.close();
+                } catch (IOException e) {
+                    logger.error(e);
+                }
+            }
+        }
+    }
+
     public static String[] Read() {
         String[] result = null;
         FileReader fileReader = null;

@@ -16,7 +16,7 @@ public class Start {
     }
 
     public static void Do() {
-        System.out.println("----------------------软件七合一（服务端beta-1.83）by nserly----------------------");
+        System.out.println("----------------------软件七合一（服务端beta-8.26）by nserly----------------------");
         logger.info("软件七合一（服务端beta-1.13）by nserly");
         int resize = Read.Check();
         if (resize == 2) {

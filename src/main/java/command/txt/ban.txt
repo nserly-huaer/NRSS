@@ -1,9 +1,0 @@
-将对方ip地址列入黑名单（此人将无法再次连接到此服务器）
-
-ban [ClientIP]
-
-    ClientIP             客户端ip地址
-
-示例：
-ban 123.321.456.654
-ban Party

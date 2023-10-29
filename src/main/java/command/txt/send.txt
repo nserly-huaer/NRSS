@@ -1,9 +1,0 @@
-向客户端发送消息
-
-send [ClientIP] [message]
-
-ClientIP                       客户端ip地址
-message                     发送信息（如果含有空格，请使用在发送信息前后写上"）
-
-示例：
-send Mary "Hello,nice to you!"

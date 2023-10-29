@@ -23,6 +23,9 @@ public class scan {
             } else if (st.toLowerCase().startsWith("getdelay")) {
                 Command.reDelay(System.currentTimeMillis(), out, in);
                 continue;
+            } else if (st.toLowerCase().startsWith("redelay")) {
+                Command.reDelay(System.currentTimeMillis(), out, in);
+                continue;
             } else if (st.toLowerCase().startsWith("messagesender")) {
                 String[] str = st.split(" ", 2);
                 st = str[1];

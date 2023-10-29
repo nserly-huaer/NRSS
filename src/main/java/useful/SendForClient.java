@@ -57,6 +57,12 @@ public class SendForClient {
         logger.debug(message);
     }
 
+    public void sendDelay(long time) {
+        String cache = "delay " + time;
+        Sender(cache);
+        logger.info("发送给客户端毫秒:" + time);
+    }
+
     public void Sender(Object E) {
         try {
             Thread.sleep(3);
@@ -66,4 +72,5 @@ public class SendForClient {
             MainS.centel(e, true);
         }
     }
+
 }
