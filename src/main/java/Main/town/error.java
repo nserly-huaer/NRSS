@@ -1,18 +1,19 @@
 package Main.town;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import useful.SendForClient;
+
+import java.io.OutputStream;
 
 @SuppressWarnings("serial")
 public class error extends Exception {
     private String ExceptionMessage;
 
-    public error(String ExceptionMessage) {
+    public error(String ExceptionMessage, OutputStream out) {
         super(ExceptionMessage);
+        SendForClient se = new SendForClient(out);
         this.ExceptionMessage = ExceptionMessage;
-        Logger logger = LogManager.getLogger(Da.class);
-        logger.error("输入非有效值，请重试！");
-
+        se.LogError("输入非有效值，请重试！");
     }
 
 }

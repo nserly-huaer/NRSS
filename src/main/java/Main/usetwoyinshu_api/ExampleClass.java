@@ -1,8 +1,7 @@
 package Main.usetwoyinshu_api;
 
 import Main.RunMainSoft.scan;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import useful.SendForClient;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,29 +12,27 @@ import java.io.OutputStream;
  */
 public class ExampleClass {
     public void Example(InputStream in, OutputStream out) throws ZeroNumberException, OnlyOneNumberException, IOException {
-        Logger logger = LogManager.getLogger(ExampleClass.class);
+        SendForClient se = new SendForClient(out);
         //创建扫描器
         EqulsNumber e = new EqulsNumber();
-        out.write("请输入要多少个因数".getBytes());
-        logger.info("请输入要多少个因数");
-        out.flush();
+        se.Send("请输入要多少个因数");
+        se.LogInfo("请输入要多少个因数");
         //在控制台中获取需要多少因数
         int howMany = Integer.parseInt(scan.str(out, in));
-        logger.info("用户输入:" + howMany);
+        se.LogInfo("用户输入:" + howMany);
         StringBuffer str = new StringBuffer();
         //从控制台中获取所有因数
         for (int i = 1; i < howMany + 1; i++) {
-            out.write(("请输入第" + i + "个自然数：").getBytes());
-            logger.info("请输入第" + i + "个自然数：");
-            out.flush();
+            se.Send(("请输入第" + i + "个自然数："));
+            se.LogInfo("请输入第" + i + "个自然数：");
             String d = new String(String.valueOf(scan.str(out, in)));
             str = str.append(d);
-            logger.info("用户输入:" + d);
+            se.LogInfo("用户输入:" + d);
             str = str.append("、");
         }
         //获取开始时间
         long begintime = System.currentTimeMillis();
-        logger.info("开始时间:" + begintime);
+        se.LogInfo("开始时间:" + begintime);
         //进行整理StringBuffer类
         int len = str.length() - 1;
         str = str.deleteCharAt(len);
@@ -48,17 +45,15 @@ public class ExampleClass {
         }
         sb = sb.deleteCharAt(sb.length() - 1);
         String sr = sb.toString();
-        out.write(("结果：公因数为：" + sr).getBytes());
-        logger.info("结果：公因数为：" + sr);
-        out.flush();
+        se.Send(("结果：公因数为：" + sr));
+        se.LogInfo("结果：公因数为：" + sr);
 
         //获取结束时间
         long endtime = System.currentTimeMillis();
-        logger.info("结束时间:" + endtime);
+        se.LogInfo("结束时间:" + endtime);
         //获取差值，用于显示运行毫秒数
-        out.write(("总耗时：" + (endtime - begintime) + "ms").getBytes());
-        logger.info("总耗时：" + (endtime - begintime) + "ms");
-        out.flush();
+        se.Send("总耗时：" + (endtime - begintime) + "ms");
+        se.LogInfo("总耗时：" + (endtime - begintime) + "ms");
         //关闭程序
         TwoThread.end();
     }

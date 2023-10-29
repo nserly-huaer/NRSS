@@ -3,6 +3,7 @@ package Main.game;
 import Main.RunMainSoft.scan;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import useful.SendForClient;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,12 +19,13 @@ public class Main {// 声明类
     }
 
     public void start(OutputStream out, InputStream in) throws IOException {
+        SendForClient se = new SendForClient(out);
         Logger logger = LogManager.getLogger(Main.class);
         // 获取开始前的时间值
         long beingtime = System.currentTimeMillis();
         logger.info("开始时间:" + beingtime);
         // 输出字
-        out.write("-----------------------------请任意输入0到1000的数字！-----------------------------".getBytes());
+        se.Send("-----------------------------请任意输入0到1000的数字！-----------------------------");
         logger.info("请任意输入0到1000的数字！");
         // 创建Random类并实例化
         Random ran = new Random();
@@ -41,7 +43,7 @@ public class Main {// 声明类
         // 循环
         while (true) {
             // 输出文字
-            out.write(("提示：值在" + min + "~" + max + "之间\n").getBytes());
+            se.Send(("提示：值在" + min + "~" + max + "之间\n"));
             logger.info("提示：值在" + min + "~" + max + "之间");
             // 把输入的文字转换成int型变量
             int think = Integer.parseInt(scan.str(out, in));
@@ -51,24 +53,21 @@ public class Main {// 声明类
             // 条件判断句
             if ((MI.add(a, b)) != think) {
                 if (think > MI.add(a, b)) {
-                    out.write("你猜大了".getBytes());
+                    se.Send("你猜大了");
                     logger.info("你猜大了");
-                    out.flush();
                     if (think < max) {
                         max = think;
                     }
                 } else {
-                    out.write("你猜小了".getBytes());
+                    se.Send("你猜小了");
                     logger.info("你猜小了");
-                    out.flush();
                     if (think > min) {
                         min = think;
                     }
                 }
             } else {
-                out.write("回答正确！".getBytes());
+                se.Send("回答正确！");
                 logger.info("回答正确！");
-                out.flush();
                 // 跳出循环
                 break;
             }
@@ -76,14 +75,12 @@ public class Main {// 声明类
             i++;
         }
         // 换行
-        out.write("\n".getBytes());
-        out.flush();
+        se.Send("\n");
         // 关闭扫描器
 //        sc.close();
         // 总猜的次数
-        out.write(("你共猜了" + i + "次").getBytes());
+        se.Send(("你共猜了" + i + "次"));
         logger.info("你共猜了" + i + "次");
-        out.flush();
         // 计算总耗时
         long endtime = System.currentTimeMillis();
         logger.info("结束时间：" + endtime);
@@ -97,8 +94,7 @@ public class Main {// 声明类
             seconds = subtracttime;
         }
         // 输出总耗时
-        out.write(("总耗时:" + minutes + "分" + seconds + "秒").getBytes());
+        se.Send(("总耗时:" + minutes + "分" + seconds + "秒"));
         logger.info("总耗时:" + minutes + "分" + seconds + "秒");
-        out.flush();
     }
 }

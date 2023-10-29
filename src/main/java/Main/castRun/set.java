@@ -5,6 +5,7 @@ import Main.RunMainSoft.MainS;
 import Main.RunMainSoft.scan;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import useful.SendForClient;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,39 +22,37 @@ public class set {
     static long charter = 10000000000L;
 
     public void runfirst(OutputStream out, InputStream in) throws IOException {
-        Logger logger = LogManager.getLogger(set.class);
+        SendForClient se = new SendForClient(out);
         set m = new set();
         boolean sc = m.scan(out, in);
         if (sc) {
             long begintime = System.currentTimeMillis();
-            logger.info("获取开始时间:" + begintime);
+            se.LogInfo("获取开始时间:" + begintime);
             try {
-                logger.info("运行-转换器");
+                se.LogInfo("运行-转换器");
                 m.cast(set.bcs, set.cs, begintime, out, in);
             } catch (ZeroException e) {
-                logger.error(e);
+                se.LogError(e);
             }
         } else {
             try {
                 throw new ZeroException(1, "Number has Zero!", out, in);
             } catch (ZeroException e) {
-                logger.error(e);
+                se.LogError(e);
             }
         }
     }
 
     public boolean scan(OutputStream out, InputStream in) throws IOException {
-        Logger logger = LogManager.getLogger(set.class);
-        out.write("请输入被除数".getBytes());
-        out.flush();
-        logger.info("请输入被除数");
+        SendForClient se = new SendForClient(out);
+        se.Send("请输入被除数");
+        se.LogInfo("请输入被除数");
         double bcs = Double.parseDouble(scan.str(out, in));// 被除数
-        logger.info("用户输入:" + bcs);
-        out.write("请输入除数".getBytes());
-        out.flush();
-        logger.info("请输入除数");
+        se.LogInfo("用户输入:" + bcs);
+        se.Send("请输入除数");
+        se.LogInfo("请输入除数");
         double cs = Double.parseDouble(scan.str(out, in));// 除数
-        logger.info("用户输入:" + cs);
+        se.LogInfo("用户输入:" + cs);
         set.bcs = bcs;
         set.cs = cs;
         if (cs != 0) {
@@ -64,21 +63,21 @@ public class set {
     }
 
     public void cast(double bcs, double cs, long begintime, OutputStream out, InputStream in) throws ZeroException, IOException {
-        Logger logger = LogManager.getLogger(set.class);
+        SendForClient se = new SendForClient(out);
         double bcs123 = bcs * set.charter;
         double cs123 = cs * set.charter;
         set m = new set();
-        logger.info("运行-转最简比例器");
+        se.LogInfo("运行-转最简比例器");
         if (!m.Calaurtor((long) bcs123, (long) cs123, begintime, out, in)) {
             throw new ZeroException(2, "Casted Number Error!", out, in);
         }
     }
 
     public boolean Calaurtor(long bcs123, long cs123, long begintime, OutputStream out, InputStream in) throws IOException {// 转换最简比例
-        Logger logger = LogManager.getLogger(set.class);
         // 质数，越多准确性越大，但同时计算量也将越大
 //        int think[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89,
 //                97};
+        SendForClient se = new SendForClient(out);
         try {
             MAX m = new MAX();
             a:
@@ -104,9 +103,9 @@ public class set {
         set.bcs = bcs123;
         set.cs = cs123;
         long endtime = System.currentTimeMillis();
-        logger.info("结束时间:" + endtime);
+        se.LogInfo("结束时间:" + endtime);
         long chartertime = endtime - begintime;
-        logger.info("毫秒值：" + chartertime);
+        se.LogInfo("毫秒值：" + chartertime);
         set.chartertime = chartertime;
         return true;
     }

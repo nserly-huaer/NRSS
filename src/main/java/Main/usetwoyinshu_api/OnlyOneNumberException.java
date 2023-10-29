@@ -2,6 +2,9 @@ package Main.usetwoyinshu_api;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import useful.SendForClient;
+
+import java.io.OutputStream;
 
 public class OnlyOneNumberException extends Exception {
     //异常信息

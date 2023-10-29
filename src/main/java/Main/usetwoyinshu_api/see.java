@@ -2,8 +2,11 @@ package Main.usetwoyinshu_api;
 
 
 import Main.yinshu_api.Mars;
+import useful.SendForClient;
 
+import java.io.OutputStream;
 import java.util.Scanner;
+
 /**
  * &#064;Nserly
  * 此类中的成员方法说明：
@@ -75,10 +78,11 @@ public class see {
         return l;
     }
 
-    public long[] Runtime(int howMany, StringBuffer str) {
+    public long[] Runtime(int howMany, StringBuffer str, OutputStream out) {
+        SendForClient se = new SendForClient(out);
         Scanner sc = new Scanner(System.in);
         for (int i = 1; i < howMany + 1; i++) {
-            System.out.println("请输入第" + i + "个自然数：");
+            se.Send("请输入第" + i + "个自然数：");
             str = str.append(sc.nextLong());
             str = str.append("、");
         }

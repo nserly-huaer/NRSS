@@ -9,8 +9,6 @@ public class MAX {
             returnvalue = vaule1;
         } else if (vaule1 < value2) {
             returnvalue = value2;
-        } else {
-            throw new CannotCastException("Casting Error!");
         }
 
         return returnvalue;
@@ -23,8 +21,6 @@ public class MAX {
             returnvalue = vaule1;
         } else if (value2 < vaule1) {
             returnvalue = value2;
-        } else {
-            throw new CannotCastException("Casting Error!");
         }
 
         return returnvalue;
