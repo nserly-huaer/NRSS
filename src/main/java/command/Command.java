@@ -18,6 +18,11 @@ import java.net.Socket;
 
 public class Command {
     private static final Logger logger = LogManager.getLogger(Command.class);
+    private boolean isSole;
+
+    public Command() {
+
+    }
 
     public Command(String arg) throws InputException, IOException {
         arg = arg.trim();
@@ -98,10 +103,13 @@ public class Command {
     }
 
     //延迟
-    public static void reDelay(long ClientTime, OutputStream out, InputStream in) {//已完成
+    public void reDelay(long ClientTime, OutputStream out, InputStream in) {//已完成
         long serverTime = System.currentTimeMillis();
-        System.out.println("服务器与客户端延迟为：" + (serverTime - ClientTime) + "ms");
-        logger.info("服务器与客户端延迟为：" + (serverTime - ClientTime) + "ms");
+        if (isSole) {
+            System.out.println("服务器与客户端延迟为：" + (serverTime - ClientTime) + "ms");
+            logger.info("服务器与客户端延迟为：" + (serverTime - ClientTime) + "ms");
+            isSole = false;
+        }
         String str = "delay " + serverTime;
         try {
             out.write(str.getBytes());
@@ -113,7 +121,8 @@ public class Command {
     }
 
     //获取客户端延迟
-    public static void getclientdelay(String str) throws IOException {//已完成
+    public void getclientdelay(String str) throws IOException {//已完成
+        isSole = true;
         Socket so = Acess.IPtoSocket(str);
         OutputStream out = so.getOutputStream();
         SendForClient se = new SendForClient(out);

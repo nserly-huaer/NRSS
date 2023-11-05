@@ -1,12 +1,10 @@
 package Main.RunMainSoft;
 
 import command.Command;
-import accept.Acess;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Socket;
 
 public class scan {
     public static String str(OutputStream out, InputStream in) throws IOException {
@@ -17,14 +15,16 @@ public class scan {
             if (length == -1) {
                 break;
             }
+            Command c = new Command();
             st = new String(buffer, 0, length);
             if (st.toLowerCase().equals("cache")) {
                 continue;
             } else if (st.toLowerCase().startsWith("getdelay")) {
-                Command.reDelay(System.currentTimeMillis(), out, in);
+                String[] cache = st.split(" ", 2);
+                c.reDelay(Long.parseLong(cache[1]), out, in);
                 continue;
             } else if (st.toLowerCase().startsWith("redelay")) {
-                Command.reDelay(System.currentTimeMillis(), out, in);
+                c.reDelay(System.currentTimeMillis(), out, in);
                 continue;
             } else if (st.toLowerCase().startsWith("messagesender")) {
                 String[] str = st.split(" ", 2);
