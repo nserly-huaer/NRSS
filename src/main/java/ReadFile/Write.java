@@ -8,7 +8,7 @@ import java.io.*;
 public class Write {
     private final static File PATH = new File("configure.properties");
     static Logger logger = LogManager.getLogger(Read.class);
-    private static final String txt = "--MaxConnect=5\n--ServerPort=24824\n--ServerName=demo\n";
+    private static final String txt = "--MaxConnect=5\n--ServerPort=24824\n";
 
     public static void DefaultSetting() {
         FileOutputStream f1 = null;

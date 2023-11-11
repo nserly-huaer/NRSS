@@ -10,12 +10,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import useful.SendForClient;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,10 +23,10 @@ public class Acess {
     public static List<Socket> arrayList = new ArrayList<>();
     private static int clientCount = 0; // 当前客户端连接数量
     private static Logger logger = LogManager.getLogger(Acess.class);
-    private ExecutorService executorService;
     public static int ServerPort;
     private static int MaxConnect;
     private static List<String> BLACKLIST = new ArrayList<>();
+    private static final int timeout = 5000; // 超时时间为5秒
 
     static {
         file.Create();
@@ -56,12 +52,13 @@ public class Acess {
 
 
     public void access(int ServerPort, int MaxConnect) {
+        ExecutorService executorService = Executors.newFixedThreadPool(MaxConnect * 2);
         Acess.MaxConnect = MaxConnect;
         ScanCommand com = new ScanCommand();
         Thread t1 = new Thread(com, "Scan");
         t1.start();
         Acess.ServerPort = ServerPort;
-        executorService = Executors.newFixedThreadPool(MaxConnect);
+        Socket clientSocket = null;
         try {
             // 创建服务器套接字，监听指定端口
             ServerSocket serverSocket = new ServerSocket(ServerPort);
@@ -73,9 +70,10 @@ public class Acess {
             System.out.println("\n\n服务器已启动，等待客户端连接...");
             logger.info("服务器已启动，等待客户端连接...");
 
+            t:
             while (true) {
                 // 等待客户端连接
-                Socket clientSocket = serverSocket.accept();
+                clientSocket = serverSocket.accept();
                 //如果客户端IP地址在黑名单中，则关闭连接
                 isInBlackList(clientSocket);
                 // 检查当前连接数量
@@ -84,19 +82,51 @@ public class Acess {
                     clientSocket.close();
                     continue;
                 }
-                // 处理客户端连接
-                clientCount++;
-                executorService.execute(new ClientHandler(clientSocket));
-                System.out.println("客户端连接成功，IP地址：" + clientSocket.getInetAddress().getHostAddress());
-                // 将客户端连接加入集合
-                arrayList.add(clientSocket);
-                logger.info("客户端连接成功，IPv4地址：" + clientSocket.getInetAddress().getHostAddress());
-            }
 
+                String expectedPrefix = "username"; // 期待接收的字符串前缀
+                clientSocket.setSoTimeout(timeout); // 设置读取超时时间为5秒
+                InputStream in = clientSocket.getInputStream();
+                try {
+                    byte[] buffer = new byte[1024];
+                    int bytesRead = in.read(buffer);
+                    String inputLine = new String(buffer, 0, bytesRead);
+
+                    if (inputLine == null) {
+                        System.out.println("Connection closed by client");
+                        // 客户端关闭了连接，跳出循环或进行其他处理
+                    } else if (inputLine.trim().toLowerCase().startsWith(expectedPrefix)) {
+                        clientSocket.setSoTimeout(0); // 取消超时设置
+                        String[] cache = inputLine.split(" ", 2);
+                        String message = "Welcome to cross the server,user name:" + cache[1] + "\n";
+                        System.out.print(message);
+                        clientSocket.getOutputStream().write(message.getBytes());
+                        clientSocket.getOutputStream().flush();
+
+                        // 在收到以指定字符串开头的消息后，做相应的处理
+                        clientCount++;
+                        System.out.println("客户端连接成功，IP地址：" + clientSocket.getInetAddress().getHostAddress());
+                        // 将客户端连接加入集合
+                        arrayList.add(clientSocket);
+                        logger.info("客户端连接成功，IPv4地址：" + clientSocket.getInetAddress().getHostAddress());
+                        executorService.execute(new ClientHandler(clientSocket));
+                    }
+
+                } catch (SocketTimeoutException e) {
+                    System.out.println("Timeout, closing the connection");
+                    // 读取超时，关闭客户端连接
+                    clientSocket.close();
+
+                }
+
+            }
+        } catch (SocketException e) {
+            logger.error(e);
+        } catch (UnknownHostException e) {
+            logger.error(e);
         } catch (IOException e) {
-            clientCount--;
             logger.error(e);
         }
+
     }
 
     public static void Disconnect(String IP, boolean isBlack) {
