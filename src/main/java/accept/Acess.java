@@ -2,31 +2,32 @@ package accept;
 
 import Exception.InputException;
 import FileStart.Run;
-import Main.RunMainSoft.MainS;
-import Main.RunMainSoft.scan;
 import command.Command;
 import command.txt.file;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import useful.SendForClient;
 
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Acess {
-    public static List<Socket> arrayList = new ArrayList<>();
     private static int clientCount = 0; // 当前客户端连接数量
     private static Logger logger = LogManager.getLogger(Acess.class);
     public static int ServerPort;
     private static int MaxConnect;
     private static List<String> BLACKLIST = new ArrayList<>();
     private static final int timeout = 5000; // 超时时间为5秒
+    public static OperatingClient ClientIP = new OperatingClient();
+    public static OperatingClient ClentName = new OperatingClient();
+    public static Socket clientSocket = null;
+    public static ServerSocket serverSocket;
+    private static ExecutorService executorService;
+    private static Thread t1;
 
     static {
         file.Create();
@@ -45,6 +46,12 @@ public class Acess {
 
     public static void Restart() {
         System.out.println("服务器重启完成");
+        executorService.shutdown();
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+
+        }
         logger.info("服务器重启完成");
         Acess ac = new Acess();
         ac.access(ServerPort, MaxConnect);
@@ -52,16 +59,16 @@ public class Acess {
 
 
     public void access(int ServerPort, int MaxConnect) {
-        ExecutorService executorService = Executors.newFixedThreadPool(MaxConnect * 2);
+        executorService = Executors.newFixedThreadPool(MaxConnect * 2);
         Acess.MaxConnect = MaxConnect;
         ScanCommand com = new ScanCommand();
-        Thread t1 = new Thread(com, "Scan");
+        t1 = new Thread(com, "Scan");
         t1.start();
         Acess.ServerPort = ServerPort;
-        Socket clientSocket = null;
+
         try {
             // 创建服务器套接字，监听指定端口
-            ServerSocket serverSocket = new ServerSocket(ServerPort);
+            serverSocket = new ServerSocket(ServerPort);
             InetAddress localhost = InetAddress.getLocalHost();
             String ipAddress = localhost.getHostAddress();
             System.out.print("服务器信息：\nipv4: " + ipAddress + ":" + ServerPort);
@@ -82,6 +89,7 @@ public class Acess {
                     clientSocket.close();
                     continue;
                 }
+
 
                 String expectedPrefix = "username"; // 期待接收的字符串前缀
                 clientSocket.setSoTimeout(timeout); // 设置读取超时时间为5秒
@@ -106,8 +114,8 @@ public class Acess {
                         clientCount++;
                         System.out.println("客户端连接成功，IP地址：" + clientSocket.getInetAddress().getHostAddress());
                         // 将客户端连接加入集合
-                        arrayList.add(clientSocket);
-                        logger.info("客户端连接成功，IPv4地址：" + clientSocket.getInetAddress().getHostAddress());
+                        ClientIP.Add(clientSocket.getInetAddress().getHostAddress(), clientSocket);
+                        logger.info("客户端连接成功，IP地址：" + clientSocket.getInetAddress().getHostAddress());
                         executorService.execute(new ClientHandler(clientSocket));
                     }
 
@@ -132,7 +140,8 @@ public class Acess {
     public static void Disconnect(String IP, boolean isBlack) {
         boolean is = false;
         try {
-            Remove(IP).close();
+//            Remove(IP).close();
+            ClientIP.Remove(IP).close();
             System.out.println("与客户端的连接已断开");
             is = true;
         } catch (IOException e) {
@@ -143,45 +152,6 @@ public class Acess {
                 System.out.println("关闭失败，请检查IP地址是否有误");
     }
 
-    public static Socket IPtoSocket(String IP) {
-        // 使用迭代器遍历集合，找到与指定IP地址匹配的Socket连接，并关闭它并从集合中删除
-        Iterator<Socket> iterator = arrayList.iterator();
-
-        while (iterator.hasNext()) {
-            Socket socket = iterator.next();
-            if (IP.equals(socket.getInetAddress().getHostAddress())) {
-                return socket;
-            }
-        }
-        return null;
-    }
-
-    public static void CloseAllSocket() {
-        SendForClient se = null;
-        for (Socket socket : arrayList) {
-            try {
-                se = new SendForClient(socket.getOutputStream());
-                se.Sender("exit");
-                socket.close();
-            } catch (IOException e) {
-                MainS.centel(e, true);
-            }
-        }
-    }
-
-    public static Socket Remove(String IP) {
-        // 使用迭代器遍历集合，找到与指定IP地址匹配的Socket连接，并关闭它并从集合中删除
-        Iterator<Socket> iterator = arrayList.iterator();
-
-        while (iterator.hasNext()) {
-            iterator.remove();
-            Socket socket = iterator.next();
-            if (IP.equals(socket.getInetAddress().getHostAddress())) {
-                return socket;
-            }
-        }
-        return null;
-    }
 
     public class ClientHandler implements Runnable {
         private static ArrayList<Socket> socketList = new ArrayList<>();

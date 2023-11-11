@@ -79,7 +79,7 @@ public class Command {
         file f = new file();
         f.Write(str);
         try {
-            Acess.Remove(str);
+            Acess.ClientIP.Remove(str).close();
         } catch (Exception e) {
             logger.warn("移除失败，原因：无法找到对应的Socket连接");
         }
@@ -90,14 +90,10 @@ public class Command {
 
     //遍历所有已连接的客户端
     public static void connectIP() {//已完成
-        System.out.println("客户端连接(共" + Acess.arrayList.size() + "个)：");
-        logger.info("客户端连接(共" + Acess.arrayList.size() + "个)：");
-        for (int i = 0; i < Acess.arrayList.size(); i++) {
-            InetAddress clientAddress = Acess.arrayList.get(i).getInetAddress();
-            String clientIP = clientAddress.getHostAddress();
-            System.out.println(clientIP);
-            Main.filecun(clientIP);
-        }
+        System.out.println("客户端连接(共" + Acess.ClientIP.GetSize() + "个)：");
+        logger.info("客户端连接(共" + Acess.ClientIP.GetSize() + "个)：");
+        System.out.println(Acess.ClientIP.GetAllIP());
+        logger.info(Acess.ClientIP.GetAllIP());
         System.out.println("--------------------------------------------------");
         Main.filecun("--------------------------------------------------");
     }
@@ -123,10 +119,13 @@ public class Command {
     //获取客户端延迟
     public void getclientdelay(String str) throws IOException {//已完成
         isSole = true;
-        Socket so = Acess.IPtoSocket(str);
-        OutputStream out = so.getOutputStream();
-        SendForClient se = new SendForClient(out);
-        se.sendDelay(System.currentTimeMillis());
+        Socket[] so = Acess.ClientIP.GetSocketOnSearch(str);
+        for (int i = 0; i < so.length; i++) {
+            OutputStream out = so[i].getOutputStream();
+            SendForClient se = new SendForClient(out);
+            se.sendDelay(System.currentTimeMillis());
+        }
+
     }
 
     //帮助
@@ -146,6 +145,18 @@ public class Command {
 
     //重启服务器
     public static void restart() {//已完成
+        Socket[] so = Acess.ClientIP.GetAllSocket();
+        try {
+            for (int i = 0; i < so.length; i++) {
+                so[i].getOutputStream().write("exit".getBytes());
+                so[i].getOutputStream().flush();
+                so[i].close();
+            }
+            if (Acess.clientSocket != null)
+                Acess.clientSocket.close();
+        } catch (IOException e) {
+            logger.error(e);
+        }
         System.out.println("关闭套接字中...");
         logger.info("关闭套接字中...");
         Acess.ClientHandler.close();
@@ -158,10 +169,13 @@ public class Command {
     //向客户端发送信息
     public static void send(String str, String IP) {//已完成
         try {
-            Socket so = Acess.IPtoSocket(IP);
-            OutputStream out = so.getOutputStream();
-            SendForClient se = new SendForClient(out);
-            se.OperatorSend(str);
+            Socket[] so = Acess.ClientIP.GetSocketOnSearch(IP);
+            for (int i = 0; i < so.length; i++) {
+                OutputStream out = so[i].getOutputStream();
+                SendForClient se = new SendForClient(out);
+                se.OperatorSend(str);
+            }
+
 
         } catch (Exception e) {
             MainS.centel(e, true);
@@ -172,7 +186,17 @@ public class Command {
 
     //关闭服务器,如果退出代码小于2，则为正常退出，否则为异常退出
     public static void stop() {//已完成
-        Acess.CloseAllSocket();
+        Socket[] so = Acess.ClientIP.GetAllSocket();
+        try {
+            for (int i = 0; i < so.length; i++) {
+                so[i].getOutputStream().write("exit".getBytes());
+                so[i].getOutputStream().flush();
+                so[i].close();
+            }
+            Acess.clientSocket.close();
+        } catch (IOException e) {
+            logger.error(e);
+        }
         System.out.println("已关闭所有连接");
         logger.info("已关闭所有连接");
         System.exit(1);
