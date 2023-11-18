@@ -55,11 +55,7 @@ public class set {
         se.LogInfo("用户输入:" + cs);
         set.bcs = bcs;
         set.cs = cs;
-        if (cs != 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return cs != 0;
     }
 
     public void cast(double bcs, double cs, long begintime, OutputStream out, InputStream in) throws ZeroException, IOException {
@@ -82,7 +78,6 @@ public class set {
             MAX m = new MAX();
             a:
             for (int i = 2; i <= m.min(bcs123, cs123); i++) {
-                b:
                 for (; ; ) {
                     if (bcs123 == cs123) {
                         bcs123 = 1;
@@ -92,7 +87,7 @@ public class set {
                         bcs123 = bcs123 / i;//
                         cs123 = cs123 / i;//
                     } else {
-                        break b;
+                        break;
                     }
                 }
             }

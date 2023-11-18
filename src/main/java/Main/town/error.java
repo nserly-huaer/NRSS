@@ -7,7 +7,7 @@ import java.io.OutputStream;
 
 @SuppressWarnings("serial")
 public class error extends Exception {
-    private String ExceptionMessage;
+    private final String ExceptionMessage;
 
     public error(String ExceptionMessage, OutputStream out) {
         super(ExceptionMessage);

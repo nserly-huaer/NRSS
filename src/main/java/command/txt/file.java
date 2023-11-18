@@ -13,9 +13,9 @@ import java.util.ArrayList;
  * Read()读取黑名单文件，然后返回String数组
  */
 public class file {
-    private static Logger logger = LogManager.getLogger(file.class);
-    private static File PATH = new File("Data\\BlackList.json");
-    private static File Mark = new File("Data");
+    private static final Logger logger = LogManager.getLogger(file.class);
+    private static final File PATH = new File("Data\\BlackList.json");
+    private static final File Mark = new File("Data");
 
     public static void Create() {
         if (!Mark.exists())

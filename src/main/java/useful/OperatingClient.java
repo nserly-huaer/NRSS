@@ -4,7 +4,7 @@ import java.net.Socket;
 import java.util.*;
 
 public class OperatingClient {
-    private Map<String, MostCollection> map;
+    private final Map<String, MostCollection> map;
 
     public OperatingClient() {
         map = new HashMap<>();

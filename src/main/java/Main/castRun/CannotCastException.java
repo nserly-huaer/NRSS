@@ -7,7 +7,7 @@ import useful.SendForClient;
 import java.io.OutputStream;
 
 public class CannotCastException extends Exception {
-    private String ExceptionMessage;
+    private final String ExceptionMessage;
 
     public CannotCastException(String ExceptionMessage, OutputStream out) {
         super(ExceptionMessage);

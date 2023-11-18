@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class MostCollection {
-    private List<Socket> list;
+    private final List<Socket> list;
 
     public MostCollection() {
         list = new ArrayList<>();

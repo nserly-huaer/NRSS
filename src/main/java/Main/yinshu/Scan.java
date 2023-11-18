@@ -18,7 +18,7 @@ public class Scan {
         SendForClient se = new SendForClient(out);
         String str = null;
         se.Send("请输入某个因数");
-        str = new String(scan.str(out, in));
+        str = scan.str(out, in);
         se.LogInfo("请输入某个因数:" + str);
         return str;
     }

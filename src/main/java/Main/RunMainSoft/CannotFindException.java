@@ -1,7 +1,7 @@
 package Main.RunMainSoft;
 
 public class CannotFindException extends Exception {
-    private String message;
+    private final String message;
 
     public CannotFindException(String message) {
         super(message);

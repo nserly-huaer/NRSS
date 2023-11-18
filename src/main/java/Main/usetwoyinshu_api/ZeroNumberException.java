@@ -2,7 +2,7 @@ package Main.usetwoyinshu_api;
 
 
 public class ZeroNumberException extends Exception {
-    private String ExceptionMessage;
+    private final String ExceptionMessage;
 
     public ZeroNumberException(String ExceptionMessage) {
         super(ExceptionMessage);

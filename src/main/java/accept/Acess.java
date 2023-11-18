@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
 
 public class Acess {
     private static int clientCount = 0; // 当前客户端连接数量
-    private static Logger logger = LogManager.getLogger(Acess.class);
+    private static final Logger logger = LogManager.getLogger(Acess.class);
     public static int ServerPort;
     private static int MaxConnect;
     private static List<String> BLACKLIST = new ArrayList<>();
@@ -88,7 +88,6 @@ public class Acess {
             System.out.println("\n\n服务器已启动，等待客户端连接...");
             logger.info("服务器已启动，等待客户端连接...");
 
-            t:
             while (true) {
                 // 等待客户端连接
                 clientSocket = serverSocket.accept();
@@ -169,10 +168,10 @@ public class Acess {
 
 
     public class ClientHandler implements Runnable {
-        private static ArrayList<Socket> socketList = new ArrayList<>();
+        private static final ArrayList<Socket> socketList = new ArrayList<>();
         public OutputStream out = null;
         public InputStream in = null;
-        private Socket socket;
+        private final Socket socket;
 
         public ClientHandler(Socket socket) {
             socketList.add(socket);
@@ -250,9 +249,9 @@ public class Acess {
     }
 
     public static class MethodCaller implements Runnable {
-        private InputStream in;
-        private OutputStream out;
-        private Socket socket;
+        private final InputStream in;
+        private final OutputStream out;
+        private final Socket socket;
 
 
         public MethodCaller(OutputStream out, InputStream in, Socket socket) {

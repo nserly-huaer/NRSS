@@ -43,7 +43,7 @@ public class MathsC {
             case 3 -> dd = m.castRund(out, in);//化简器
             case 4 -> dd = m.yin_shu(out, in);//因数求解器
             case 5 -> dd = m.usetwoyinshu(out, in);//多数公因数求解器[beta]
-            default -> m.error(out, in);
+            default -> MainS.error(out, in);
         }
 
 

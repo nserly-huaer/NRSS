@@ -14,7 +14,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 
 public class Equal {
-    private static Logger logger = LogManager.getLogger(Equal.class);
+    private static final Logger logger = LogManager.getLogger(Equal.class);
 
     public static boolean Sem(int index) throws NoListException {
         boolean result = true;

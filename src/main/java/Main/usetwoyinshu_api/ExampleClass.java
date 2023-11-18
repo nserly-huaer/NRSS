@@ -25,7 +25,7 @@ public class ExampleClass {
         for (int i = 1; i < howMany + 1; i++) {
             se.Send(("请输入第" + i + "个自然数："));
             se.LogInfo("请输入第" + i + "个自然数：");
-            String d = new String(String.valueOf(scan.str(out, in)));
+            String d = String.valueOf(scan.str(out, in));
             str = str.append(d);
             se.LogInfo("用户输入:" + d);
             str = str.append("、");

@@ -28,7 +28,7 @@ public class Start {
         logger.info("请输入执行代码（1.恢复默认设置 2.启动服务器）------$Exit退出");
         String str = Scan.scan();
         logger.info("管理员输入：" + str);
-        if (str.toLowerCase().equals("$exit")) {
+        if (str.equalsIgnoreCase("$exit")) {
             logger.info("管理员控制：关闭服务器");
             System.out.println("服务器已关闭");
             logger.info("Server Closed");

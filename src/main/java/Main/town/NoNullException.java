@@ -8,7 +8,7 @@ import java.io.OutputStream;
 
 @SuppressWarnings("serial")
 public class NoNullException extends Exception {
-    private String ExceptionMessage;
+    private final String ExceptionMessage;
 
     public NoNullException(String ExceptionMessage, OutputStream out) {
         super(ExceptionMessage);

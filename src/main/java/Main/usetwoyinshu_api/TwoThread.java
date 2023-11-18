@@ -34,7 +34,7 @@ public class TwoThread implements Runnable {
             throw new OnlyOneNumberException("Number size is one");
         }
         see s = new see();
-        this.number = s.Slip(str);
+        number = s.Slip(str);
         Thread first = new Thread(this, "first");
         Thread second = new Thread(this, "second");
         first.run();
@@ -100,7 +100,7 @@ public class TwoThread implements Runnable {
     }
 
     public TwoThread(int howMany, StringBuffer str) {
-        this.howMany = howMany;
-        this.str = str;
+        TwoThread.howMany = howMany;
+        TwoThread.str = str;
     }
 }

@@ -28,10 +28,10 @@ public class Command {
         arg = arg.trim();
         String[] cache = arg.split(" ", 2);
         boolean b = cache.length == 2;
-        if (cache[0].toLowerCase().equals("getclientdelay")) {
+        if (cache[0].equalsIgnoreCase("getclientdelay")) {
             if (b) getclientdelay(cache[1]);
             else throw new InputException("参数不正确，请重试");
-        } else if (cache[0].toLowerCase().equals("help")) {
+        } else if (cache[0].equalsIgnoreCase("help")) {
             if (cache.length == 1) {
                 help();
             } else {
@@ -40,20 +40,20 @@ public class Command {
                     throw new InputException("参数不正确，请重试");
                 }
             }
-        } else if (cache[0].toLowerCase().equals("restart")) {
+        } else if (cache[0].equalsIgnoreCase("restart")) {
             restart();
-        } else if (cache[0].toLowerCase().equals("send")) {
+        } else if (cache[0].equalsIgnoreCase("send")) {
             String[] str = cache[1].split(" ", 2);//[0]为IP地址，[1]为发送信息
             send(str[1], str[0]);
-        } else if (cache[0].toLowerCase().equals("stop")) {
+        } else if (cache[0].equalsIgnoreCase("stop")) {
             stop();
-        } else if (cache[0].toLowerCase().equals("ban")) {
+        } else if (cache[0].equalsIgnoreCase("ban")) {
             if (b) ban(cache[1]);
             else throw new InputException("参数不正确，请重试");
         } else if (cache[0].equals("connectIP")) {
             connectIP();
 
-        } else if (cache[0].toLowerCase().equals("disconnect")) {
+        } else if (cache[0].equalsIgnoreCase("disconnect")) {
             DisConnect(cache[1]);
         } else {
             logger.error("命令有误，请重试~");
@@ -77,7 +77,7 @@ public class Command {
     public static void ban(String str) {//已完成
         file.Create();
         file f = new file();
-        f.Write(str);
+        file.Write(str);
         try {
             Socket[] so = Acess.ClientIP.RemoveAndReturn(str);
             for (int i = 0; i < so.length; i++) {

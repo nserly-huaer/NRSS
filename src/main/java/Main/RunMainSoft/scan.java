@@ -17,7 +17,7 @@ public class scan {
             }
             Command c = new Command();
             st = new String(buffer, 0, length);
-            if (st.toLowerCase().equals("cache")) {
+            if (st.equalsIgnoreCase("cache")) {
                 continue;
             } else if (st.toLowerCase().startsWith("getdelay")) {
                 String[] cache = st.split(" ", 2);
