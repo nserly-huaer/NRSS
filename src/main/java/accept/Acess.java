@@ -6,6 +6,8 @@ import command.Command;
 import command.txt.file;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import useful.OperatingClient;
+import useful.PageOperating;
 
 import java.io.*;
 import java.net.*;
@@ -33,15 +35,27 @@ public class Acess {
         file.Create();
     }
 
-    public static void isInBlackList(Socket socket) throws IOException {
+    {
+        Acess.MaxConnect = Integer.parseInt(PageOperating.MaxConnect);
+        Acess.ServerPort = Integer.parseInt(PageOperating.ServerPort);
+    }
+
+    public static boolean isInBlackList(Socket socket) throws IOException {
         BLACKLIST = List.of(file.Read());
         InetAddress clientAddress = socket.getInetAddress();
         String clientIP = clientAddress.getHostAddress();
         if (BLACKLIST.contains(clientIP)) {
             System.out.println("Connection from blacklisted IP " + clientIP + " rejected.");
+            socket.getOutputStream().write("messageSender You are in blacklisted,Contact the administrator".getBytes());
+//            socket.getOutputStream().flush();
+            socket.getOutputStream().write("log Error-You are in blacklisted,Contact the administrator".getBytes());
+            socket.getOutputStream().flush();
             socket.close();
+//            socket = null;
             clientCount--;
+            return true;
         }
+        return false;
     }
 
     public static void Restart() {
@@ -54,18 +68,15 @@ public class Acess {
         }
         logger.info("服务器重启完成");
         Acess ac = new Acess();
-        ac.access(ServerPort, MaxConnect);
+        ac.access();
     }
 
 
-    public void access(int ServerPort, int MaxConnect) {
+    public void access() {
         executorService = Executors.newFixedThreadPool(MaxConnect * 2);
-        Acess.MaxConnect = MaxConnect;
         ScanCommand com = new ScanCommand();
         t1 = new Thread(com, "Scan");
         t1.start();
-        Acess.ServerPort = ServerPort;
-
         try {
             // 创建服务器套接字，监听指定端口
             serverSocket = new ServerSocket(ServerPort);
@@ -82,7 +93,8 @@ public class Acess {
                 // 等待客户端连接
                 clientSocket = serverSocket.accept();
                 //如果客户端IP地址在黑名单中，则关闭连接
-                isInBlackList(clientSocket);
+                if (isInBlackList(clientSocket))
+                    continue;
                 // 检查当前连接数量
                 if (clientCount >= MaxConnect) {
                     System.out.println("已达到最大客户端连接数量，拒绝新连接");
@@ -105,7 +117,7 @@ public class Acess {
                     } else if (inputLine.trim().toLowerCase().startsWith(expectedPrefix)) {
                         clientSocket.setSoTimeout(0); // 取消超时设置
                         String[] cache = inputLine.split(" ", 2);
-                        String message = "Welcome to cross the server,user name:" + cache[1] + "\n";
+                        String message = PageOperating.Welcome + ":" + cache[1] + "\n";
                         System.out.print(message);
                         clientSocket.getOutputStream().write(message.getBytes());
                         clientSocket.getOutputStream().flush();
@@ -141,7 +153,10 @@ public class Acess {
         boolean is = false;
         try {
 //            Remove(IP).close();
-            ClientIP.Remove(IP).close();
+            Socket[] so = ClientIP.RemoveAndReturn(IP);
+            for (int i = 0; i < so.length; i++) {
+                so[i].close();
+            }
             System.out.println("与客户端的连接已断开");
             is = true;
         } catch (IOException e) {

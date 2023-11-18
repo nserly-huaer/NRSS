@@ -79,7 +79,10 @@ public class Command {
         file f = new file();
         f.Write(str);
         try {
-            Acess.ClientIP.Remove(str).close();
+            Socket[] so = Acess.ClientIP.RemoveAndReturn(str);
+            for (int i = 0; i < so.length; i++) {
+                so[i].close();
+            }
         } catch (Exception e) {
             logger.warn("移除失败，原因：无法找到对应的Socket连接");
         }

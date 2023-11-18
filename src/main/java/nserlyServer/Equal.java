@@ -6,7 +6,12 @@ import ReadFile.Write;
 import accept.Acess;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import useful.Check;
+import useful.PageOperating;
 import useful.Scan;
+
+import java.lang.reflect.Field;
+import java.util.Arrays;
 
 public class Equal {
     private static Logger logger = LogManager.getLogger(Equal.class);
@@ -23,19 +28,31 @@ public class Equal {
     }
 
     private static boolean StartServer() {
-
-        int PORT = 25565;
-        int MaxConnect = 10;
-
+        Check[] enumArray = Check.values();
+        String[] stringArray = Arrays.stream(enumArray)
+                .map(Enum::name)
+                .toArray(String[]::new);
         for (int i = 0; i < Cast.Value.length; i++) {
-            if (Cast.Name[i].equals("ServerPort")) {
-                PORT = Integer.parseInt(Cast.Value[i]);
-            } else if (Cast.Name[i].equals("MaxConnect")) {
-                MaxConnect = Integer.parseInt(Cast.Value[i]);
+            for (int j = 0; j < stringArray.length; j++) {
+                if (Cast.Name[i].equals(stringArray[j])) {
+                    try {
+                        // 获取类对象
+                        Class<?> pageOperatingClass = PageOperating.class;
+                        Field languageField = null;
+                        languageField = pageOperatingClass.getDeclaredField(Cast.Name[i]);
+                        languageField.setAccessible(true);
+                        languageField.set(null, Cast.Value[i]);
+                    } catch (NoSuchFieldException e) {
+                        throw new RuntimeException(e);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
             }
         }
         Acess ac = new Acess();
-        ac.access(PORT, MaxConnect);
+        ac.access();
 
 
         return true;
