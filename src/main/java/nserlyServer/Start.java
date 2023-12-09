@@ -6,16 +6,19 @@ import ReadFile.Read;
 import ReadFile.Write;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import useful.Collections;
 import useful.Scan;
 
 public class Start {
+    public static Collections co = new Collections();
     static Logger logger = LogManager.getLogger(Read.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IllegalAccessException {
+
         Do();
     }
 
-    public static void Do() {
+    public static void Do() throws IllegalAccessException {
         System.out.println("----------------------软件七合一（服务端beta-8.26）by nserly----------------------");
         logger.info("软件七合一（服务端beta-1.13）by nserly");
         int resize = Read.Check();
@@ -35,6 +38,7 @@ public class Start {
             System.exit(1);
         }
         Cast cast = new Cast(Read.Loading());
+        co.Add(cast);
         try {
             Equal.Sem(Integer.parseInt(str));
         } catch (NoListException e) {

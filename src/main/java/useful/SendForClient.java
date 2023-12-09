@@ -16,13 +16,13 @@ public class SendForClient {
     }
 
     public void SendLine(String message) {
-        String cache = "messageSender " + message + "\n";
+        String cache = "--messageSender " + message + "\n";
         Sender(cache);
         logger.info(message);
     }
 
     public void Send(String message) {
-        String cache = "messageSender " + message;
+        String cache = "--messageSender " + message;
         Sender(cache);
         logger.info(message);
     }

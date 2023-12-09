@@ -2,15 +2,19 @@ package accept;
 
 import Exception.InputException;
 import FileStart.Run;
+import ReadFile.Cast;
 import command.Command;
 import command.txt.file;
+import nserlyServer.Start;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import useful.Information;
 import useful.OperatingClient;
 import useful.PageOperating;
 
 import java.io.*;
 import java.net.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -30,8 +34,16 @@ public class Acess {
     public static ServerSocket serverSocket;
     private static ExecutorService executorService;
     private static Thread t1;
+    public static Action ac;
 
     static {
+        try {
+            ac = new Action("UserInput", "");
+        } catch (SQLException e) {
+            logger.error(e);
+        } catch (ClassNotFoundException e) {
+            logger.error(e);
+        }
         file.Create();
     }
 
@@ -73,7 +85,7 @@ public class Acess {
 
 
     public void access() {
-        executorService = Executors.newFixedThreadPool(MaxConnect * 2);
+            executorService = Executors.newFixedThreadPool(MaxConnect * 2);
         ScanCommand com = new ScanCommand();
         t1 = new Thread(com, "Scan");
         t1.start();
@@ -92,8 +104,7 @@ public class Acess {
                 // 等待客户端连接
                 clientSocket = serverSocket.accept();
                 //如果客户端IP地址在黑名单中，则关闭连接
-                if (isInBlackList(clientSocket))
-                    continue;
+                if (isInBlackList(clientSocket)) continue;
                 // 检查当前连接数量
                 if (clientCount >= MaxConnect) {
                     System.out.println("已达到最大客户端连接数量，拒绝新连接");
@@ -114,20 +125,58 @@ public class Acess {
                         System.out.println("Connection closed by client");
                         // 客户端关闭了连接，跳出循环或进行其他处理
                     } else if (inputLine.trim().toLowerCase().startsWith(expectedPrefix)) {
-                        clientSocket.setSoTimeout(0); // 取消超时设置
-                        String[] cache = inputLine.split(" ", 2);
-                        String message = PageOperating.Welcome + ":" + cache[1] + "\n";
-                        System.out.print(message);
-                        clientSocket.getOutputStream().write(message.getBytes());
-                        clientSocket.getOutputStream().flush();
-
                         // 在收到以指定字符串开头的消息后，做相应的处理
                         clientCount++;
-                        System.out.println("客户端连接成功，IP地址：" + clientSocket.getInetAddress().getHostAddress());
-                        // 将客户端连接加入集合
-                        ClientIP.Add(clientSocket.getInetAddress().getHostAddress(), clientSocket);
-                        logger.info("客户端连接成功，IP地址：" + clientSocket.getInetAddress().getHostAddress());
-                        executorService.execute(new ClientHandler(clientSocket));
+                        if (!inputLine.trim().toLowerCase().startsWith(expectedPrefix + "-delay")) {
+                            System.out.println("客户端连接成功，IP地址：" + clientSocket.getInetAddress().getHostAddress());
+                            // 将客户端连接加入集合
+                            ClientIP.Add(clientSocket.getInetAddress().getHostAddress(), clientSocket);
+                            logger.info("客户端连接成功，IP地址：" + clientSocket.getInetAddress().getHostAddress());
+                            executorService.execute(new ClientHandler(clientSocket));
+
+
+                            clientSocket.setSoTimeout(0); // 取消超时设置
+                            String[] cache = inputLine.split(" ", 2);
+                            Information information = new Information(cache[1], clientSocket.getInetAddress().getHostAddress(), null);
+                            Cast c = (Cast) Start.co.Get();
+                            c.Welcome(information);
+                            information.Welcome = c.f.getResult();
+                            String message = information.Welcome + "\n";
+
+
+                            System.out.print(message);
+                            clientSocket.getOutputStream().write(message.getBytes());
+                            clientSocket.getOutputStream().flush();
+
+                        } else {
+                            executorService.execute(() -> {
+                                try {
+                                    OutputStream out1 = null;
+                                    InputStream in1 = clientSocket.getInputStream();
+                                    out1 = clientSocket.getOutputStream();
+
+                                    String st = "";
+                                    for (; ; ) {
+                                        byte[] buffer1 = new byte[1024];
+                                        int length = in.read(buffer);
+                                        if (length == -1) {
+                                            break;
+                                        }
+                                        Command c = new Command();
+                                        st = new String(buffer, 0, length);
+                                        if (st.toLowerCase().startsWith("getdelay")) {
+                                            String[] cache = st.split(" ", 2);
+                                            c.reDelay(Long.parseLong(cache[1]), out1, in1);
+                                        } else if (st.toLowerCase().startsWith("redelay")) {
+                                            c.reDelay(System.currentTimeMillis(), out1, in1);
+                                        }
+                                    }
+                                } catch (IOException e) {
+                                    logger.error(e);
+                                }
+
+                            });
+                        }
                     }
 
                 } catch (SocketTimeoutException e) {
@@ -135,6 +184,8 @@ public class Acess {
                     // 读取超时，关闭客户端连接
                     clientSocket.close();
 
+                } catch (IllegalAccessException e) {
+                    logger.error(e);
                 }
 
             }
@@ -161,9 +212,7 @@ public class Acess {
         } catch (IOException e) {
             logger.error("关闭连接失败，请重试~");
         }
-        if (!isBlack)
-            if (!is)
-                System.out.println("关闭失败，请检查IP地址是否有误");
+        if (!isBlack) if (!is) System.out.println("关闭失败，请检查IP地址是否有误");
     }
 
 
@@ -197,32 +246,6 @@ public class Acess {
 
                 // 调用方法的线程
                 new Thread(new MethodCaller(out, in, socket)).start();
-//                String st = null;
-//                for (; ; ) {
-//                    byte[] buffer = new byte[1024];
-//                    int length = in.read(buffer);
-//                    if (length == -1) {
-//                        break;
-//                    }
-//                    st = new String(buffer, 0, length);
-//                    if (st.startsWith("exit")) {
-//                        Acess.clientCount--;
-//                        socket.close();
-//                    }
-//                }
-//                byte[] buffer = new byte[1024];
-//
-//                while (true) {
-//                    int bytesRead = in.read(buffer);
-//                    if (bytesRead == -1) {
-//                        break;
-//                    }
-//                    if()
-//
-//                }
-
-                // 关闭连接
-//                socket.close();
             } catch (IOException e) {
                 Acess.clientCount--;
                 logger.error(e);

@@ -26,7 +26,8 @@ public class scan {
             } else if (st.toLowerCase().startsWith("redelay")) {
                 c.reDelay(System.currentTimeMillis(), out, in);
                 continue;
-            } else if (st.toLowerCase().startsWith("messagesender")) {
+            } else if (st.toLowerCase().contains("--messagesender")) {
+                st = st.substring(st.lastIndexOf("--"), st.length());
                 String[] str = st.split(" ", 2);
                 st = str[1];
                 if (str[1].trim().isEmpty()) continue;
