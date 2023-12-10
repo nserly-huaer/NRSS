@@ -92,10 +92,6 @@ public class Run {
             default -> MainS.error(out, in);
 
         }
-
-
-        //            out.write("运行中触发异常，请与开发者联系！\n".getBytes());
-        //            out.flush();
         return dd;
     }
 }

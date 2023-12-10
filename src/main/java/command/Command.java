@@ -9,12 +9,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import Exception.InputException;
 import useful.SendForClient;
+import useful.StringPro;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.management.MemoryMXBean;
+import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.Socket;
+
+import static java.lang.Runtime.getRuntime;
 
 public class Command {
     private static final Logger logger = LogManager.getLogger(Command.class);
@@ -40,6 +45,8 @@ public class Command {
                     throw new InputException("参数不正确，请重试");
                 }
             }
+        } else if (cache[0].equals("information")) {
+            information();
         } else if (cache[0].equalsIgnoreCase("restart")) {
             restart();
         } else if (cache[0].equalsIgnoreCase("send")) {
@@ -61,6 +68,34 @@ public class Command {
 
     }
 
+    //获取服务器信息
+    public static void information() {
+        StringPro str = new StringPro();
+        System.out.println("-------------------------运行内存占用-------------------------");
+        long usedMem = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        long totalMem = Runtime.getRuntime().totalMemory();
+        BigDecimal bigDecimal = new BigDecimal(usedMem);
+        bigDecimal = bigDecimal.multiply(new BigDecimal(100)).divide(new BigDecimal(totalMem), 2, BigDecimal.ROUND_HALF_DOWN);
+        str.appendLn("内存占用" + usedMem / (1024 * 1024) + "/"
+                + totalMem / (1024 * 1024) + "MB(使用率：" + bigDecimal + "%)"
+        );
+        str.appendLn("JVM最大内存:" + Runtime.getRuntime().maxMemory() / (1024 * 1024) + "M");
+        System.out.print(str);
+        System.out.println("------------------------------------------------------------\n");
+        logger.info(str);
+        str = new StringPro();
+        if (Acess.ClientIP.GetSize() > 0) {
+            //---------------------------------客户端连接(共1个)：---------------------------------
+            System.out.println("----------------------客户端连接(共" + Acess.ClientIP.GetSize() + "个)：----------------------");
+            logger.info("客户端连接(共" + Acess.ClientIP.GetSize() + "个)：");
+            System.out.println(Acess.ClientIP.GetAllIP());
+            logger.info(Acess.ClientIP.GetAllIP());
+            System.out.println("------------------------------------------------------------\n");
+        }
+        System.out.println(Acess.IPInformation);
+        logger.info(Acess.IPInformation);
+    }
+
     //关闭指定IP地址客户端Socket
     public static void DisConnect(String IP) {//已完成
         try {
@@ -70,7 +105,6 @@ public class Command {
         } catch (Exception e) {
             System.out.println("无法关闭连接，请检查IP地址是否有误！");
         }
-
     }
 
     //将IP地址或者客户端名列入黑名单
@@ -134,14 +168,14 @@ public class Command {
     //帮助
     public static void help() {//已完成
         String str = help.Read("help");
-        System.out.println(str);
+        System.out.println("--------------------------------------------------------------------------------\n" + str + "\n--------------------------------------------------------------------------------");
         Main.filecun(str);
     }
 
     //获取命令名帮助
     public static void help(String str) {//已完成
         String str1 = help.Read(str);
-        System.out.println(str1);
+        System.out.println("--------------------------------------------------------------------------------\n" + str1 + "\n--------------------------------------------------------------------------------");
         Main.filecun(str1);
 
     }

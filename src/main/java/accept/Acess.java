@@ -35,6 +35,7 @@ public class Acess {
     private static ExecutorService executorService;
     private static Thread t1;
     public static Action ac;
+    public static String IPInformation;
 
     static {
         try {
@@ -85,7 +86,7 @@ public class Acess {
 
 
     public void access() {
-            executorService = Executors.newFixedThreadPool(MaxConnect * 2);
+        executorService = Executors.newFixedThreadPool(MaxConnect * 2);
         ScanCommand com = new ScanCommand();
         t1 = new Thread(com, "Scan");
         t1.start();
@@ -94,9 +95,11 @@ public class Acess {
             serverSocket = new ServerSocket(ServerPort);
             InetAddress localhost = InetAddress.getLocalHost();
             String ipAddress = localhost.getHostAddress();
-            System.out.print("服务器信息：\nipv4: " + ipAddress + ":" + ServerPort);
-            System.out.println(GetIPv6.getIPv6());
-            logger.info("服务器信息：\nip:" + ipAddress + ":" + ServerPort);
+            IPInformation = "----------------------服务器信息：----------------------\nipv4: " + ipAddress + ":" + ServerPort
+                    + GetIPv6.getIPv6() + "\n"
+                    + "------------------------------------------------------";
+            System.out.println(IPInformation);
+            logger.info(IPInformation);
             System.out.println("\n\n服务器已启动，等待客户端连接...");
             logger.info("服务器已启动，等待客户端连接...");
 
@@ -132,9 +135,6 @@ public class Acess {
                             // 将客户端连接加入集合
                             ClientIP.Add(clientSocket.getInetAddress().getHostAddress(), clientSocket);
                             logger.info("客户端连接成功，IP地址：" + clientSocket.getInetAddress().getHostAddress());
-                            executorService.execute(new ClientHandler(clientSocket));
-
-
                             clientSocket.setSoTimeout(0); // 取消超时设置
                             String[] cache = inputLine.split(" ", 2);
                             Information information = new Information(cache[1], clientSocket.getInetAddress().getHostAddress(), null);
@@ -142,12 +142,10 @@ public class Acess {
                             c.Welcome(information);
                             information.Welcome = c.f.getResult();
                             String message = information.Welcome + "\n";
-
-
                             System.out.print(message);
                             clientSocket.getOutputStream().write(message.getBytes());
                             clientSocket.getOutputStream().flush();
-
+                            executorService.execute(new ClientHandler(clientSocket));
                         } else {
                             executorService.execute(() -> {
                                 try {

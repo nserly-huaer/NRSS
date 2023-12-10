@@ -4,6 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class help {
+    private static final String information = "获取服务器信息（不仅限于服务器接发地址、端口、内存占用等）" +
+            "\n" +
+            "实例\n" +
+            "information";
     private static final String ban = "将对方ip地址列入黑名单（此IP地址将无法再次连接到此服务器）\n" +
             "\n" +
             "ban [ClientIP]\n" +
@@ -34,6 +38,7 @@ public class help {
             "getclientdelay Marty";
     private static final String help = "你好，这是帮助；我们竭尽全力为你服务，一下为命令列表，你可以输入help 命令名来获取命令名的详细描述\n" +
             "ban 将对方ip地址列入黑名单（此IP地址将无法再次连接到此服务器）\n" +
+            "information 获取服务器信息\n" +
             "getclientdelay 获取客户端到服务器之间的延迟\n" +
             "help 帮助\n" +
             "restart 重启服务器：此操作将断开与客户端的连接并将服务器重启，未保存的数据将可能丢失！\n" +
@@ -79,8 +84,10 @@ public class help {
             case "restart" -> result = restart;
             case "send" -> result = send;
             case "stop" -> result = stop;
+            case "information" -> result = information;
             default -> result = "命令无效，请重试~";
         }
+
         return result;
     }
 

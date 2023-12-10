@@ -10,7 +10,6 @@ public class Cast {
     public static String[] Name;
     public static String[] Value;
     public Formation f;
-    public static String Welcome;
 
     public Cast(String[] Input) throws IllegalAccessException {
         ArrayList<String> array = new ArrayList<>();
