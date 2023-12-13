@@ -8,11 +8,13 @@ import command.txt.file;
 import nserlyServer.Start;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import useful.Formation;
 import useful.Information;
 import useful.OperatingClient;
 import useful.PageOperating;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.net.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -139,7 +141,16 @@ public class Acess {
                             String[] cache = inputLine.split(" ", 2);
                             Information information = new Information(cache[1], clientSocket.getInetAddress().getHostAddress(), null);
                             Cast c = (Cast) Start.co.Get();
-                            c.Welcome(information);
+                            String dyt = c.Change(information, "Welcome");
+                            c.f = new Formation(dyt);
+
+                            Class<?> pageOperatingClass = Information.class;
+                            Field[] languageField = pageOperatingClass.getDeclaredFields();
+                            for (Field fie : languageField) {
+                                if (fie.get(information) == null) continue;
+                                c.getFormation().Change(fie.getName(), fie.get(information).toString());
+                            }
+
                             information.Welcome = c.f.getResult();
                             String message = information.Welcome + "\n";
                             System.out.print(message);
@@ -203,6 +214,8 @@ public class Acess {
 //            Remove(IP).close();
             Socket[] so = ClientIP.RemoveAndReturn(IP);
             for (int i = 0; i < so.length; i++) {
+                so[i].getOutputStream().write("exit".getBytes());
+                so[i].getOutputStream().flush();
                 so[i].close();
             }
             System.out.println("与客户端的连接已断开");

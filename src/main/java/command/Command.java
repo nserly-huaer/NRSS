@@ -61,7 +61,11 @@ public class Command {
             connectIP();
 
         } else if (cache[0].equalsIgnoreCase("disconnect")) {
-            DisConnect(cache[1]);
+            if (cache.length < 2) {
+                logger.error("命令有误，请重试~");
+            } else {
+                DisConnect(cache[1]);
+            }
         } else {
             logger.error("命令有误，请重试~");
         }
@@ -148,7 +152,7 @@ public class Command {
             out.write(str.getBytes());
             out.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
 
     }
@@ -215,7 +219,7 @@ public class Command {
 
 
         } catch (Exception e) {
-            MainS.centel(e, true);
+            logger.error(e);
         }
 
     }

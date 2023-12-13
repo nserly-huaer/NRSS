@@ -68,7 +68,7 @@ public class SendForClient {
             out.write(E.toString().getBytes());
             out.flush();
         } catch (Exception e) {
-            MainS.centel(e, true);
+            logger.error(e);
         }
     }
 

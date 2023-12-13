@@ -1,7 +1,6 @@
 package nserlyServer;
 
 import Exception.NoListException;
-import ReadFile.Cast;
 import ReadFile.Write;
 import accept.Acess;
 import org.apache.logging.log4j.LogManager;
@@ -12,6 +11,7 @@ import useful.Scan;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Equal {
     private static final Logger logger = LogManager.getLogger(Equal.class);
@@ -32,25 +32,26 @@ public class Equal {
         String[] stringArray = Arrays.stream(enumArray)
                 .map(Enum::name)
                 .toArray(String[]::new);
-        for (int i = 0; i < Cast.Value.length; i++) {
-            for (int j = 0; j < stringArray.length; j++) {
-                if (Cast.Name[i].equals(stringArray[j])) {
-                    try {
-                        // 获取类对象
-                        Class<?> pageOperatingClass = PageOperating.class;
-                        Field languageField = null;
-                        languageField = pageOperatingClass.getDeclaredField(Cast.Name[i]);
-                        languageField.setAccessible(true);
-                        languageField.set(null, Cast.Value[i]);
-                    } catch (NoSuchFieldException e) {
-                        throw new RuntimeException(e);
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    }
-
+        for (int j = 0; j < stringArray.length; j++) {
+            HashMap<String, String> map = Start.cast.getMap();
+            if (map.containsKey(stringArray[j])) {
+                try {
+                    // 获取类对象
+                    Class<?> pageOperatingClass = PageOperating.class;
+                    Field languageField = null;
+                    languageField = pageOperatingClass.getDeclaredField(stringArray[j]);
+                    languageField.setAccessible(true);
+                    languageField.set(null, map.get(stringArray[j]));
+                } catch (NoSuchFieldException e) {
+                    throw new RuntimeException(e);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
                 }
+
             }
         }
+
+
         Acess ac = new Acess();
         ac.access();
 

@@ -12,6 +12,7 @@ import useful.Scan;
 public class Start {
     public static Collections co = new Collections();
     static Logger logger = LogManager.getLogger(Read.class);
+    static Cast cast;
 
     public static void main(String[] args) throws IllegalAccessException {
 
@@ -37,7 +38,7 @@ public class Start {
             logger.info("Server Closed");
             System.exit(1);
         }
-        Cast cast = new Cast(Read.Loading());
+        cast = new Cast(Read.Loading());
         co.Add(cast);
         try {
             Equal.Sem(Integer.parseInt(str));
