@@ -304,6 +304,11 @@ public class Acess {
         }
 
         @Override
+        public boolean equals(Object obj) {
+            return super.equals(obj);
+        }
+
+        @Override
         public void run() {
             Run r = new Run();
             try {
